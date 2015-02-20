@@ -1,7 +1,10 @@
 package com.example.tests;
 
 public class GroupCreationTests extends TestBase {
-  @org.testng.annotations.Test
+  //For JUnit
+  @org.junit.Test
+  // For TestNG
+  //@org.testng.annotations.Test
   public void testNonEmptyGroupCreation() throws Exception {
     openMainPage();
 	gotoGroupsPage();
@@ -15,7 +18,10 @@ public class GroupCreationTests extends TestBase {
     returnToGroupPage();
   }
 
-  @org.testng.annotations.Test
+  //For JUnit
+  @org.junit.Test
+  // For TestNG
+  //@org.testng.annotations.Test
   public void testEmptyGroupCreation() throws Exception {
     openMainPage();
 	gotoGroupsPage();
