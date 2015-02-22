@@ -1,5 +1,6 @@
 package com.example.tests;
 
+
 public class GroupData {
 	public String nameGroup;
 	public String header;

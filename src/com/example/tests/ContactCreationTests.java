@@ -4,13 +4,13 @@ package com.example.tests;
 public class ContactCreationTests extends TestBase {
 
   //For JUnit
-  @org.junit.Test
+  //@org.junit.Test
   // For TestNG
-  //@org.testng.annotations.Test
+  @org.testng.annotations.Test
   public void testNonEmptyContactCreation() throws Exception {
-    openMainPage();
-    gotoHomePage();
-    initContactCreation();
+    app.getNavigationHelper().openMainPage();
+    app.getNavigationHelper().gotoHomePage();
+    app.getContactHelper().initContactCreation();
     ContactData contact = new ContactData();
     contact.firstname = "Сидор";
     contact.lastname = "Сидоров";
@@ -26,9 +26,9 @@ public class ContactCreationTests extends TestBase {
     contact.new_group = "Rob";
     contact.address2 = "Адрес Сидорова 2";
     contact.phone2 = "222222";
-    fillContactForm(contact);
-    submitContactCreation();
-    returnToHomePage();
+    app.getContactHelper().fillContactForm(contact);
+    app.getContactHelper().submitContactCreation();
+    app.getContactHelper().returnToHomePage();
   }
 
 }
