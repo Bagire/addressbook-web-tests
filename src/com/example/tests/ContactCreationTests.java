@@ -7,7 +7,7 @@ public class ContactCreationTests extends TestBase {
   @org.junit.Test
   // For TestNG
   //@org.testng.annotations.Test
-  public void testNonEmptyGroupCreation() throws Exception {
+  public void testNonEmptyContactCreation() throws Exception {
     openMainPage();
     gotoHomePage();
     initContactCreation();
