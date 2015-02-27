@@ -17,6 +17,7 @@ public abstract class HelperBase {
 	  this.manager = manager;
 	  this.driver = manager.driver;
 	}
+
 	private boolean isElementPresent(By by) {
 	    try {
 	    	driver.findElement(by);
@@ -49,12 +50,14 @@ public abstract class HelperBase {
 	    	acceptNextAlert = true;
 	    }
 	  }
+
 	protected void type(By locator, String text) {
 		if (text != null) {
 			driver.findElement(locator).clear();
 			driver.findElement(locator).sendKeys(text);
 		}
 	}
+	
 	protected void click(By locator) {
 		driver.findElement(locator).click();
 	}
@@ -64,4 +67,5 @@ public abstract class HelperBase {
 			new Select(driver.findElement(locator)).selectByVisibleText(text);
 		}
 	}
+
 }

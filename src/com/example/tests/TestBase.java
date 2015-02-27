@@ -1,25 +1,19 @@
 package com.example.tests;
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import com.example.fw.ApplicationManager;
 
 public class TestBase {
 
 	protected static ApplicationManager app;
 	
-	//For JUnit
-	//@org.junit.BeforeClass
-	//public void setUp() throws Exception {
-	// For TestNG
-	@org.testng.annotations.BeforeTest
+	@BeforeTest
 	public void setUp() throws Exception {
 		app = new ApplicationManager();
 	  }
 
-	//For JUnit
-	//@org.junit.AfterClass
-	//public void tearDown() throws Exception {
-	// For TestNG
-	@org.testng.annotations.AfterTest
+	@AfterTest
 	public void tearDown() throws Exception {
 	    app.stop();
 	  }

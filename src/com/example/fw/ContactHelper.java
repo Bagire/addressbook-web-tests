@@ -23,9 +23,9 @@ public class ContactHelper extends HelperBase {
 		type(By.name("work"),contact.work);
 		type(By.name("email"),contact.email);
 		type(By.name("email2"),contact.email2);
-	    selectByText(By.name("bday"), contact.bday);
-	    selectByText(By.name("bmonth"), contact.bmonth);
-		type(By.name("byear"),contact.byear);
+	    selectByText(By.name("bday"), contact.birthDay);
+	    selectByText(By.name("bmonth"), contact.birthMonth);
+		type(By.name("byear"),contact.birthYear);
 	    //selectByText(By.name("new_group"), contact.new_group);
 		type(By.name("address2"),contact.address2);
 		type(By.name("phone2"),contact.phone2);
@@ -38,5 +38,23 @@ public class ContactHelper extends HelperBase {
 	public void returnToHomePage() {
 		click(By.linkText("home page"));
 	  }
+
+	public void initContactByNumString(String numString) {
+		click(By.xpath("(//a/img[@alt='Edit'])[" + numString + "]"));
+	}
+
+	public void deleteContactByNumString(String numString) {
+		this.initContactByNumString(numString);
+		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+	}
+
+	public void submitContactEditing() {
+		click(By.xpath("//*[@type='submit' and @value='Update']"));
+	}
+
+	public void initContactByPartName(String partName) {
+		//first found by partName
+		click(By.xpath("(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]"));
+	}
 
 }

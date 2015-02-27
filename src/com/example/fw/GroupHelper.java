@@ -28,17 +28,17 @@ public class GroupHelper extends HelperBase {
 		click(By.linkText("group page"));
 		}
 
-	private void findGroupBasedXPathByIndex(int index) {
-		click(By.xpath("//input[@name='selected[]'][" + index + "]"));
+	private void findGroupBasedXPathByNumString(String numString) {
+		click(By.xpath("//input[@name='selected[]'][" + numString + "]"));
 	}
 
-	public void deleteGroup(int index) {
-		findGroupBasedXPathByIndex(index);
+	public void deleteGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
 		click(By.name("delete"));
 	}
 
-	public void initGroup(int index) {
-		findGroupBasedXPathByIndex(index);
+	public void initGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
 		click(By.name("edit"));
 	}
 

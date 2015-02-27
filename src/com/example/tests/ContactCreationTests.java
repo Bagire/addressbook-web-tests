@@ -1,12 +1,10 @@
 package com.example.tests;
 
+import org.testng.annotations.Test;
 
 public class ContactCreationTests extends TestBase {
 
-  //For JUnit
-  //@org.junit.Test
-  // For TestNG
-  @org.testng.annotations.Test
+  @Test
   public void testNonEmptyContactCreation() throws Exception {
     app.getNavigationHelper().openMainPage();
     app.getNavigationHelper().gotoHomePage();
@@ -20,10 +18,10 @@ public class ContactCreationTests extends TestBase {
     contact.work = "444444";
     contact.email = "s@s.ru";
     contact.email2 = "s@s.com";
-    contact.bday = "1";
-    contact.bmonth = "November";
-    contact.byear = "1984";
-    contact.new_group = "Rob";
+    contact.birthDay = "1";
+    contact.birthMonth = "November";
+    contact.birthYear = "1984";
+    contact.newGroup = "Rob";
     contact.address2 = "Адрес Сидорова 2";
     contact.phone2 = "222222";
     app.getContactHelper().fillContactForm(contact);

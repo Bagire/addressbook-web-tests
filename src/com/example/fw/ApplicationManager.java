@@ -1,7 +1,6 @@
 package com.example.fw;
 
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -13,7 +12,6 @@ public class ApplicationManager {
 	private NavigationHelper navigationHelper;
 	private GroupHelper groupHelper;
 	private ContactHelper contactHelper;
-	
 	
 	public ApplicationManager() {
 		driver = new FirefoxDriver();

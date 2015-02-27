@@ -1,10 +1,10 @@
 package com.example.tests;
 
+import org.testng.annotations.Test;
+
 public class GroupCreationTests extends TestBase {
-  //For JUnit
-  //@org.junit.Test
-  // For TestNG
-  @org.testng.annotations.Test
+
+  @Test
   public void testNonEmptyGroupCreation() throws Exception {
 	app.getNavigationHelper().openMainPage();
 	app.getNavigationHelper().gotoGroupsPage();
@@ -18,10 +18,7 @@ public class GroupCreationTests extends TestBase {
     app.getGroupHelper().returnToGroupPage();
   }
 
-  //For JUnit
-  //@org.junit.Test
-  // For TestNG
-  @org.testng.annotations.Test
+  @Test
   public void testEmptyGroupCreation() throws Exception {
 	  app.getNavigationHelper().openMainPage();
 	  app.getNavigationHelper().gotoGroupsPage();
@@ -30,4 +27,5 @@ public class GroupCreationTests extends TestBase {
 	  app.getGroupHelper().submitGroupCreation();
 	  app.getGroupHelper().returnToGroupPage();
   }
+
 }

@@ -1,12 +1,17 @@
 package com.example.tests;
 
+import org.testng.annotations.Test;
+
 public class GroupRemovalTests extends TestBase{
 	
-	@org.testng.annotations.Test
-	public void deleteSomeGroup () {
+	//Number of removing string
+	private String numString = "last()-1";
+
+	@Test
+	public void testDeleteGroupByNumString () {
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().gotoGroupsPage();
-		app.getGroupHelper().deleteGroup(1);
+		app.getGroupHelper().deleteGroupByNumString(numString);
 	    app.getGroupHelper().returnToGroupPage();
 	}
 
