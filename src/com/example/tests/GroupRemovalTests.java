@@ -8,11 +8,12 @@ public class GroupRemovalTests extends TestBase{
 	private String numString = "last()-1";
 
 	@Test
-	public void testDeleteGroupByNumString () {
+	public void testDeleteGroupByNumStringIfExists () {
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().gotoGroupsPage();
-		app.getGroupHelper().deleteGroupByNumString(numString);
-	    app.getGroupHelper().returnToGroupPage();
+		if (app.getGroupHelper().deleteGroupByNumString(numString)){
+			app.getGroupHelper().returnToGroupPage();
+			}
 	}
 
 }

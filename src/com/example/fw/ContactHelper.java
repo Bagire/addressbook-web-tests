@@ -39,22 +39,41 @@ public class ContactHelper extends HelperBase {
 		click(By.linkText("home page"));
 	  }
 
-	public void initContactByNumString(String numString) {
-		click(By.xpath("(//a/img[@alt='Edit'])[" + numString + "]"));
+	public boolean initContactByNumString(String numString) {
+		String xpathString = "(//a/img[@alt='Edit'])[" + numString + "]";
+		if (isElementPresent(By.xpath(xpathString))) {
+			click(By.xpath(xpathString));
+			return true;
+			}
+		else {
+			return false;
+			}
 	}
 
-	public void deleteContactByNumString(String numString) {
-		this.initContactByNumString(numString);
-		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+	public boolean deleteContactByNumString(String numString) {
+		if (this.initContactByNumString(numString)){
+			click(By.xpath("//*[@type='submit' and @value='Delete']"));
+			return true;
+			}
+		else {
+			return false;
+			}
 	}
 
 	public void submitContactEditing() {
 		click(By.xpath("//*[@type='submit' and @value='Update']"));
 	}
 
-	public void initContactByPartName(String partName) {
+	public boolean initContactByPartName(String partName) {
 		//first found by partName
-		click(By.xpath("(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]"));
+		String xpathString = "(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]";
+		if (isElementPresent(By.xpath(xpathString))) {
+			click(By.xpath(xpathString));
+			return true;
+			}
+		else {
+			return false;
+			}
 	}
 
 }

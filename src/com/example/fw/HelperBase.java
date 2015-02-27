@@ -18,7 +18,7 @@ public abstract class HelperBase {
 	  this.driver = manager.driver;
 	}
 
-	private boolean isElementPresent(By by) {
+	protected boolean isElementPresent(By by) {
 	    try {
 	    	driver.findElement(by);
 	      return true;

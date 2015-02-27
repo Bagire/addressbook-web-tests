@@ -8,11 +8,12 @@ public class ContactRemovalTests extends TestBase{
 	private String numString = "last()";
 
 	@Test
-	public void testDeleteContactByNumString () {
+	public void testDeleteContactByNumStringIfExists () {
 		app.getNavigationHelper().openMainPage();
 	    app.getNavigationHelper().gotoHomePage();
-		app.getContactHelper().deleteContactByNumString(numString);
-	    app.getContactHelper().returnToHomePage();
+		if (app.getContactHelper().deleteContactByNumString(numString)){
+			app.getContactHelper().returnToHomePage();
+		}
 	}
 
 }

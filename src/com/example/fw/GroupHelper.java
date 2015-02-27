@@ -28,18 +28,35 @@ public class GroupHelper extends HelperBase {
 		click(By.linkText("group page"));
 		}
 
-	private void findGroupBasedXPathByNumString(String numString) {
-		click(By.xpath("//input[@name='selected[]'][" + numString + "]"));
+	private boolean findGroupBasedXPathByNumString(String numString) {
+		String xpathString = "//input[@name='selected[]'][" + numString + "]";
+		if (isElementPresent(By.xpath(xpathString))){
+			click(By.xpath(xpathString));
+			return true;
+			}
+		else {
+			return true;
+			}
 	}
 
-	public void deleteGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
-		click(By.name("delete"));
+	public boolean deleteGroupByNumString(String numString) {
+		if (findGroupBasedXPathByNumString(numString)){
+			click(By.name("delete"));
+			return true;
+			}
+		else {
+			return true;
+			}
 	}
 
-	public void initGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
-		click(By.name("edit"));
+	public boolean initGroupByNumString(String numString) {
+		if (findGroupBasedXPathByNumString(numString)){
+			click(By.name("edit"));
+			return true;
+			}
+		else {
+			return true;
+			}
 	}
 
 	public void submitGroupEditing() {

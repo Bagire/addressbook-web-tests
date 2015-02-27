@@ -11,28 +11,30 @@ public class ContactEditingTests extends TestBase{
 	private String partName = "Сидор";
 
 	@Test
-	public void testEditContactByNumString () {
+	public void testEditContactByNumStringIfExists () {
 	app.getNavigationHelper().openMainPage();
     app.getNavigationHelper().gotoHomePage();
-	app.getContactHelper().initContactByNumString(numString);
-    ContactData contact = new ContactData();
-    contact.firstname = "Акакий";
-    app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactEditing();
-    app.getContactHelper().returnToHomePage();
+	if (app.getContactHelper().initContactByNumString(numString)){
+    	ContactData contact = new ContactData();
+    	contact.firstname = "Акакий";
+    	app.getContactHelper().fillContactForm(contact);
+    	app.getContactHelper().submitContactEditing();
+    	app.getContactHelper().returnToHomePage();
+    	}
 	}
 
 
 	@Test
-	public void testEditContactByPartName () {
+	public void testEditContactByPartNameIfExists () {
 	app.getNavigationHelper().openMainPage();
     app.getNavigationHelper().gotoHomePage();
-	app.getContactHelper().initContactByPartName(partName);
-    ContactData contact = new ContactData();
-    contact.firstname = "Серж";
-    app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactEditing();
-    app.getContactHelper().returnToHomePage();
+	if (app.getContactHelper().initContactByPartName(partName)){
+		ContactData contact = new ContactData();
+		contact.firstname = "Серж";
+		app.getContactHelper().fillContactForm(contact);	
+		app.getContactHelper().submitContactEditing();
+		app.getContactHelper().returnToHomePage();
+		}
 	}
 
 }
