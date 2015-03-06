@@ -1,6 +1,10 @@
 package com.example.fw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.example.tests.GroupData;
 
@@ -28,39 +32,52 @@ public class GroupHelper extends HelperBase {
 		click(By.linkText("group page"));
 		}
 
-	private boolean findGroupBasedXPathByNumString(String numString) {
+	private void findGroupBasedXPathByNumString(String numString) {
 		String xpathString = "//input[@name='selected[]'][" + numString + "]";
-		if (isElementPresent(By.xpath(xpathString))){
-			click(By.xpath(xpathString));
-			return true;
-			}
-		else {
-			return true;
-			}
+		isElementPresent(By.xpath(xpathString));
+		click(By.xpath(xpathString));
 	}
 
-	public boolean deleteGroupByNumString(String numString) {
-		if (findGroupBasedXPathByNumString(numString)){
-			click(By.name("delete"));
-			return true;
-			}
-		else {
-			return true;
-			}
+	public void deleteGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
+		click(By.name("delete"));
 	}
 
-	public boolean initGroupByNumString(String numString) {
-		if (findGroupBasedXPathByNumString(numString)){
-			click(By.name("edit"));
-			return true;
-			}
-		else {
-			return true;
-			}
+	public void initGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
+		click(By.name("edit"));
+	}
+
+	private void findGroupBasedXPathByIndex(int index) {
+		String xpathString = "//input[@name='selected[]'][" + (index+1) + "]";
+		click(By.xpath(xpathString));
+	}
+
+	public void deleteGroupByIndex(int index) {
+		findGroupBasedXPathByIndex(index);
+		click(By.name("delete"));
+	}
+
+	public void initGroupByIndex(int index) {
+		findGroupBasedXPathByIndex(index);
+		click(By.name("edit"));
 	}
 
 	public void submitGroupEditing() {
 		click(By.name("update"));
+	}
+
+	public List<GroupData> getGroupsList() {
+		List<GroupData> groupsList = new ArrayList<GroupData>();
+		List<WebElement> checkboxes = findElements(By.name("selected[]"));
+		for (WebElement checkbox : checkboxes) {
+			GroupData group = new GroupData();
+			String title = checkbox.getAttribute("title");
+			group.nameGroup = title.substring("Select (".length(), title.length() - ")".length());
+			groupsList.add(group);
+		}
+		
+		return groupsList;
 	}
 
 }

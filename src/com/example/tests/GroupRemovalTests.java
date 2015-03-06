@@ -1,19 +1,44 @@
 package com.example.tests;
 
+import static org.testng.Assert.assertEquals;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 public class GroupRemovalTests extends TestBase{
 	
 	//Number of removing string
 	private String numString = "last()-1";
+	
+	//Number of removing string (int)
+	private int index = 0;
 
 	@Test
 	public void testDeleteGroupByNumStringIfExists () {
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().gotoGroupsPage();
-		if (app.getGroupHelper().deleteGroupByNumString(numString)){
-			app.getGroupHelper().returnToGroupPage();
-			}
+		app.getGroupHelper().deleteGroupByNumString(numString);
+		app.getGroupHelper().returnToGroupPage();
+	}
+
+	@Test
+	public void testDeleteGroupByIndex () {
+		app.getNavigationHelper().openMainPage();
+		app.getNavigationHelper().gotoGroupsPage();
+
+		List<GroupData> oldList = app.getGroupHelper().getGroupsList();
+		
+		app.getGroupHelper().deleteGroupByIndex(index);
+		app.getGroupHelper().returnToGroupPage();
+		
+		List<GroupData> newList = app.getGroupHelper().getGroupsList();
+	    
+		oldList.remove(index);
+		Collections.sort(oldList);
+		assertEquals(newList, oldList);
+
 	}
 
 }
