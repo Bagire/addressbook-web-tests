@@ -23,8 +23,9 @@ public class GroupData implements Comparable<GroupData>{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
+/*		result = prime * result
 				+ ((nameGroup == null) ? 0 : nameGroup.hashCode());
+*/
 		return result;
 	}
 

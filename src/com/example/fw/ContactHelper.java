@@ -1,6 +1,10 @@
 package com.example.fw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
 
@@ -39,41 +43,49 @@ public class ContactHelper extends HelperBase {
 		click(By.linkText("home page"));
 	  }
 
-	public boolean initContactByNumString(String numString) {
+	public void initContactByNumString(String numString) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + numString + "]";
-		if (isElementPresent(By.xpath(xpathString))) {
-			click(By.xpath(xpathString));
-			return true;
-			}
-		else {
-			return false;
-			}
+		click(By.xpath(xpathString));
 	}
 
-	public boolean deleteContactByNumString(String numString) {
-		if (this.initContactByNumString(numString)){
-			click(By.xpath("//*[@type='submit' and @value='Delete']"));
-			return true;
-			}
-		else {
-			return false;
-			}
+	public void deleteContactByNumString(String numString) {
+		initContactByNumString(numString);
+		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+	}
+
+	public void initContactByIndex(int index) {
+		String xpathString = "(//a/img[@alt='Edit'])[" + (index+1) + "]";
+		click(By.xpath(xpathString));
+	}
+
+	public void deleteContactByIndex(int index) {
+		initContactByIndex(index);
+		click(By.xpath("//*[@type='submit' and @value='Delete']"));
 	}
 
 	public void submitContactEditing() {
 		click(By.xpath("//*[@type='submit' and @value='Update']"));
 	}
 
-	public boolean initContactByPartName(String partName) {
+	public void initContactByPartName(String partName) {
 		//first found by partName
 		String xpathString = "(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]";
-		if (isElementPresent(By.xpath(xpathString))) {
-			click(By.xpath(xpathString));
-			return true;
-			}
-		else {
-			return false;
-			}
+		click(By.xpath(xpathString));
+	}
+
+	public List<ContactData> getContactsList() {
+		List<ContactData> contactsList = new ArrayList<ContactData>();
+		List<WebElement> checkboxes = findElements(By.name("selected[]"));
+		for (WebElement checkbox : checkboxes) {
+			ContactData contact = new ContactData();
+			String title = checkbox.getAttribute("title");
+			String name = title.substring("Select (".length(), title.length() - ")".length());
+			contact.firstname = name.substring(0, name.lastIndexOf(" ")); 
+			contact.lastname = name.substring(name.lastIndexOf(" ")+1);
+			contactsList.add(contact);
+		}
+		
+		return contactsList;
 	}
 
 }
