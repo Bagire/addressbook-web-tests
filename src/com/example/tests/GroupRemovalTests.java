@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.testng.annotations.Test;
 
@@ -16,7 +17,7 @@ public class GroupRemovalTests extends TestBase{
 	private int index = 0;
 
 	@Test
-	public void testDeleteGroupByNumStringIfExists () {
+	public void testDeleteGroupByNumString () {
 		app.getNavigationHelper().openMainPage();
 		app.getNavigationHelper().gotoGroupsPage();
 		app.getGroupHelper().deleteGroupByNumString(numString);
@@ -30,6 +31,9 @@ public class GroupRemovalTests extends TestBase{
 
 		List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 		
+		Random rnd = new Random();
+		index=rnd.nextInt(oldList.size()-1);
+
 		app.getGroupHelper().deleteGroupByIndex(index);
 		app.getGroupHelper().returnToGroupPage();
 		

@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.testng.annotations.Test;
 
@@ -16,7 +17,7 @@ public class GroupEditingTests extends TestBase{
 	private int index = 0;
 
 	@Test
-	public void testEditGroupByNumStringIfExists () {
+	public void testEditGroupByNumString () {
 	app.getNavigationHelper().openMainPage();
 	app.getNavigationHelper().gotoGroupsPage();
 	app.getGroupHelper().initGroupByNumString(numString);
@@ -27,16 +28,17 @@ public class GroupEditingTests extends TestBase{
     app.getGroupHelper().returnToGroupPage();
 	}
 
-	@Test
-	public void testEditGroupByIndex () {
+	@Test(dataProvider = "randomValidGroupGenerator")
+	public void testEditGroupByIndex (GroupData group) {
 	app.getNavigationHelper().openMainPage();
 	app.getNavigationHelper().gotoGroupsPage();
 
 	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
+	Random rnd = new Random();
+	index=rnd.nextInt(oldList.size()-1);
+
 	app.getGroupHelper().initGroupByIndex(index);
-	GroupData group = new GroupData();
-    group.nameGroup = "new name2";
     app.getGroupHelper().fillGroupForm(group);
     app.getGroupHelper().submitGroupEditing();
     app.getGroupHelper().returnToGroupPage();

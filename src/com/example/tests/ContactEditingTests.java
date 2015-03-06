@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.testng.annotations.Test;
 
@@ -30,17 +31,17 @@ public class ContactEditingTests extends TestBase{
     app.getContactHelper().returnToHomePage();
 	}
 
-	@Test
-	public void testEditContactByIndex () {
+	@Test(dataProvider = "randomValidContactGenerator")
+	public void testEditContactByIndex (ContactData contact) {
 	app.getNavigationHelper().openMainPage();
     app.getNavigationHelper().gotoHomePage();
 
 	List<ContactData> oldList = app.getContactHelper().getContactsList();
 	
+	Random rnd = new Random();
+	index=rnd.nextInt(oldList.size()-1);
+
 	app.getContactHelper().initContactByIndex(index);
-    ContactData contact = new ContactData();
-    contact.firstname = "Петр";
-	contact.lastname = "Сергеев";
     app.getContactHelper().fillContactForm(contact);
     app.getContactHelper().submitContactEditing();
     app.getContactHelper().returnToHomePage();
