@@ -10,15 +10,19 @@ import com.example.tests.ContactData;
 
 public class ContactHelper extends HelperBase {
 
+	public static boolean CREATION = true;
+	public static boolean EDITING = true;
+	
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
 	}
 
-	public void initContactCreation() {
+	public ContactHelper initContactCreation() {
 		click(By.linkText("add new"));
+		return this;
 	  }
 
-	public void fillContactForm(ContactData contact) {
+	public ContactHelper fillContactForm(ContactData contact, boolean typeForm) {
 		type(By.name("firstname"),contact.firstname);
 		type(By.name("lastname"),contact.lastname);
 		type(By.name("address"),contact.address);
@@ -30,47 +34,62 @@ public class ContactHelper extends HelperBase {
 	    selectByText(By.name("bday"), contact.birthDay);
 	    selectByText(By.name("bmonth"), contact.birthMonth);
 		type(By.name("byear"),contact.birthYear);
-	    //selectByText(By.name("new_group"), contact.new_group);
+		if (typeForm == CREATION){
+			//selectByText(By.name("new_group"), contact.new_group);
+		} else {
+			if (findElements(By.name("new_group")).size() != 0) {
+				throw new Error("Group selector exists in editing form");
+			}
+		}
 		type(By.name("address2"),contact.address2);
 		type(By.name("phone2"),contact.phone2);
+		return this;
 	}
 
-	public void submitContactCreation() {
+	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
+		return this;
 	  }
 
-	public void returnToHomePage() {
+	public ContactHelper returnToHomePage() {
 		click(By.linkText("home page"));
+		return this;
 	  }
 
-	public void initContactByNumString(String numString) {
+	public ContactHelper initContactByNumString(String numString) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + numString + "]";
 		click(By.xpath(xpathString));
+		return this;
 	}
 
-	public void deleteContactByNumString(String numString) {
+	public ContactHelper deleteContactByNumString(String numString) {
 		initContactByNumString(numString);
 		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+		return this;
 	}
 
-	public void initContactByIndex(int index) {
+	public ContactHelper initContactByIndex(int index) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + (index+1) + "]";
 		click(By.xpath(xpathString));
+		return this;
 	}
 
-	public void deleteContactByIndex(int index) {
+	public ContactHelper deleteContactByIndex(int index) {
 		initContactByIndex(index);
 		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+		return this;
 	}
 
-	public void submitContactEditing() {
+	public ContactHelper submitContactEditing() {
 		click(By.xpath("//*[@type='submit' and @value='Update']"));
+		return this;
 	}
 
-	public void initContactByPartName(String partName) {
+	public ContactHelper initContactByPartName(String partName) {
 		//first found by partName
 		String xpathString = "(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]";
 		click(By.xpath(xpathString));
+		return this;
 	}
 
 	public List<ContactData> getContactsList() {

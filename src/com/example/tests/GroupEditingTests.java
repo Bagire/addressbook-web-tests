@@ -18,30 +18,33 @@ public class GroupEditingTests extends TestBase{
 
 	@Test
 	public void testEditGroupByNumString () {
-	app.getNavigationHelper().openMainPage();
-	app.getNavigationHelper().gotoGroupsPage();
-	app.getGroupHelper().initGroupByNumString(numString);
+	app.navigateTo().mainPage();
+	app.navigateTo().groupsPage();
+	app.getGroupHelper()
+		.initGroupByNumString(numString);
 	GroupData group = new GroupData();
-    group.nameGroup = "new name1";
-    app.getGroupHelper().fillGroupForm(group);
-    app.getGroupHelper().submitGroupEditing();
-    app.getGroupHelper().returnToGroupPage();
+    group.withNameGroup ("new name1");
+    app.getGroupHelper()
+    	.fillGroupForm(group)
+    	.submitGroupEditing()
+    	.returnToGroupPage();
 	}
 
 	@Test(dataProvider = "randomValidGroupGenerator")
 	public void testEditGroupByIndex (GroupData group) {
-	app.getNavigationHelper().openMainPage();
-	app.getNavigationHelper().gotoGroupsPage();
+	app.navigateTo().mainPage();
+	app.navigateTo().groupsPage();
 
 	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getGroupHelper().initGroupByIndex(index);
-    app.getGroupHelper().fillGroupForm(group);
-    app.getGroupHelper().submitGroupEditing();
-    app.getGroupHelper().returnToGroupPage();
+	app.getGroupHelper()
+		.initGroupByIndex(index)
+		.fillGroupForm(group)
+		.submitGroupEditing()
+		.returnToGroupPage();
 	
 	List<GroupData> newList = app.getGroupHelper().getGroupsList();
     

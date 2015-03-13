@@ -7,19 +7,22 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
+import static com.example.fw.ContactHelper.CREATION;
+
 public class ContactCreationTests extends TestBase {
 
   @Test(dataProvider = "randomValidContactGenerator")
   public void testContactCreationWithValidData(ContactData contact) throws Exception {
-    app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().gotoHomePage();
+    app.navigateTo().mainPage();
+    app.navigateTo().homePage();
 
 	List<ContactData> oldList = app.getContactHelper().getContactsList();
 	
-    app.getContactHelper().initContactCreation();
-    app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactCreation();
-    app.getContactHelper().returnToHomePage();
+    app.getContactHelper()
+    	.initContactCreation()
+    	.fillContactForm(contact, CREATION)
+    	.submitContactCreation()
+    	.returnToHomePage();
 
 	List<ContactData> newList = app.getContactHelper().getContactsList();
     

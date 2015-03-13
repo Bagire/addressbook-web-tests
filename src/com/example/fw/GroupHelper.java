@@ -14,67 +14,77 @@ public class GroupHelper extends HelperBase {
 		super(manager);
 	}
 
-	public void initGroupCreation() {
+	public GroupHelper initGroupCreation() {
 		click(By.name("new"));
+		return this;
+	}
+
+	public GroupHelper fillGroupForm(GroupData group) {
+		type(By.name("group_name"), group.getNameGroup());
+		type(By.name("group_header"), group.getHeader());
+		type(By.name("group_footer"), group.getFooter());
+		return this;
 	  }
 
-	public void fillGroupForm(GroupData group) {
-		type(By.name("group_name"), group.nameGroup);
-		type(By.name("group_header"), group.header);
-		type(By.name("group_footer"), group.footer);
-	  }
-
-	public void submitGroupCreation() {
+	public GroupHelper submitGroupCreation() {
 		click(By.name("submit"));
+		return this;
 	  }
 
-	public void returnToGroupPage() {
+	public GroupHelper returnToGroupPage() {
 		click(By.linkText("group page"));
+		return this;
 		}
 
-	private void findGroupBasedXPathByNumString(String numString) {
+	private GroupHelper findGroupBasedXPathByNumString(String numString) {
 		String xpathString = "//input[@name='selected[]'][" + numString + "]";
 		isElementPresent(By.xpath(xpathString));
 		click(By.xpath(xpathString));
+		return this;
 	}
 
-	public void deleteGroupByNumString(String numString) {
+	public GroupHelper deleteGroupByNumString(String numString) {
 		findGroupBasedXPathByNumString(numString);
 		click(By.name("delete"));
+		return this;
 	}
 
-	public void initGroupByNumString(String numString) {
+	public GroupHelper initGroupByNumString(String numString) {
 		findGroupBasedXPathByNumString(numString);
 		click(By.name("edit"));
+		return this;
 	}
 
-	private void findGroupBasedXPathByIndex(int index) {
+	private GroupHelper findGroupBasedXPathByIndex(int index) {
 		String xpathString = "//input[@name='selected[]'][" + (index+1) + "]";
 		click(By.xpath(xpathString));
+		return this;
 	}
 
-	public void deleteGroupByIndex(int index) {
+	public GroupHelper deleteGroupByIndex(int index) {
 		findGroupBasedXPathByIndex(index);
 		click(By.name("delete"));
+		return this;
 	}
 
-	public void initGroupByIndex(int index) {
+	public GroupHelper initGroupByIndex(int index) {
 		findGroupBasedXPathByIndex(index);
 		click(By.name("edit"));
+		return this;
 	}
 
-	public void submitGroupEditing() {
+	public GroupHelper submitGroupEditing() {
 		click(By.name("update"));
+		return this;
 	}
 
 	public List<GroupData> getGroupsList() {
 		List<GroupData> groupsList = new ArrayList<GroupData>();
 		List<WebElement> checkboxes = findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {
-			GroupData group = new GroupData();
 			String title = checkbox.getAttribute("title");
-			group.nameGroup = title.substring("Select (".length(), title.length() - ")".length());
-			groupsList.add(group);
+			String nameGroup = title.substring("Select (".length(), title.length() - ")".length());
+			groupsList.add(new GroupData().withNameGroup(nameGroup));
 		}
 		
 		return groupsList;

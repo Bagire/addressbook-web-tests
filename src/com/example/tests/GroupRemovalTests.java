@@ -18,24 +18,26 @@ public class GroupRemovalTests extends TestBase{
 
 	@Test
 	public void testDeleteGroupByNumString () {
-		app.getNavigationHelper().openMainPage();
-		app.getNavigationHelper().gotoGroupsPage();
-		app.getGroupHelper().deleteGroupByNumString(numString);
-		app.getGroupHelper().returnToGroupPage();
+		app.navigateTo().mainPage();
+		app.navigateTo().groupsPage();
+		app.getGroupHelper()
+			.deleteGroupByNumString(numString)
+			.returnToGroupPage();
 	}
 
 	@Test
 	public void testDeleteGroupByIndex () {
-		app.getNavigationHelper().openMainPage();
-		app.getNavigationHelper().gotoGroupsPage();
+		app.navigateTo().mainPage();
+		app.navigateTo().groupsPage();
 
 		List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 		
 		Random rnd = new Random();
 		index=rnd.nextInt(oldList.size()-1);
 
-		app.getGroupHelper().deleteGroupByIndex(index);
-		app.getGroupHelper().returnToGroupPage();
+		app.getGroupHelper()
+			.deleteGroupByIndex(index)
+			.returnToGroupPage();
 		
 		List<GroupData> newList = app.getGroupHelper().getGroupsList();
 	    

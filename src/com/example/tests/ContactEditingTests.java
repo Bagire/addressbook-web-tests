@@ -8,6 +8,8 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
+import static com.example.fw.ContactHelper.EDITING;
+
 public class ContactEditingTests extends TestBase{
 
 	//Number of editing string
@@ -21,30 +23,33 @@ public class ContactEditingTests extends TestBase{
 
 	@Test
 	public void testEditContactByNumString () {
-	app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().gotoHomePage();
-	app.getContactHelper().initContactByNumString(numString);
+	app.navigateTo().mainPage();
+    app.navigateTo().homePage();
+	app.getContactHelper()
+		.initContactByNumString(numString);
     ContactData contact = new ContactData();
     contact.firstname = "Акакий";
-    app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactEditing();
-    app.getContactHelper().returnToHomePage();
+    app.getContactHelper()
+    	.fillContactForm(contact, EDITING)
+    	.submitContactEditing()
+    	.returnToHomePage();
 	}
 
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void testEditContactByIndex (ContactData contact) {
-	app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().gotoHomePage();
+	app.navigateTo().mainPage();
+    app.navigateTo().homePage();
 
 	List<ContactData> oldList = app.getContactHelper().getContactsList();
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getContactHelper().initContactByIndex(index);
-    app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactEditing();
-    app.getContactHelper().returnToHomePage();
+	app.getContactHelper()
+		.initContactByIndex(index)
+		.fillContactForm(contact, EDITING)
+		.submitContactEditing()
+		.returnToHomePage();
 
 	List<ContactData> newList = app.getContactHelper().getContactsList();
     
@@ -57,14 +62,16 @@ public class ContactEditingTests extends TestBase{
 
 	@Test
 	public void testEditContactByPartName () {
-	app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().gotoHomePage();
-	app.getContactHelper().initContactByPartName(partName);
+	app.navigateTo().mainPage();
+    app.navigateTo().homePage();
+	app.getContactHelper()
+		.initContactByPartName(partName);
 	ContactData contact = new ContactData();
 	contact.firstname = "Серж";
-	app.getContactHelper().fillContactForm(contact);	
-	app.getContactHelper().submitContactEditing();
-	app.getContactHelper().returnToHomePage();
+	app.getContactHelper()
+		.fillContactForm(contact, EDITING)	
+		.submitContactEditing()
+		.returnToHomePage();
 	}
 
 }
