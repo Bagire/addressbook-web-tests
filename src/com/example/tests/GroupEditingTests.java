@@ -11,24 +11,8 @@ import com.example.utils.SortedListOf;
 
 public class GroupEditingTests extends TestBase{
 
-	//Number of editing string
-	private String numString = "last()-1";
-
 	//Number of editing string (int)
 	private int index = 0;
-
-	@Test
-	public void testEditGroupByNumString () {
-	app.navigateTo().groupsPage();
-	app.getGroupHelper()
-		.initGroupByNumString(numString);
-	GroupData group = new GroupData();
-    group.withNameGroup ("new name1");
-    app.getGroupHelper()
-    	.fillGroupForm(group)
-    	.submitGroupEditing()
-    	.returnToGroupPage();
-	}
 
 	@Test(dataProvider = "randomValidGroupGenerator")
 	public void testEditGroupByIndex (GroupData group) {

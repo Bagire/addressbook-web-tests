@@ -8,19 +8,8 @@ import com.example.utils.SortedListOf;
 
 public class GroupRemovalTests extends TestBase{
 	
-	//Number of removing string
-	private String numString = "last()-1";
-	
 	//Number of removing string (int)
 	private int index = 0;
-
-	@Test
-	public void testDeleteGroupByNumString () {
-		app.navigateTo().groupsPage();
-		app.getGroupHelper()
-			.deleteGroupByNumString(numString)
-			.returnToGroupPage();
-	}
 
 	@Test
 	public void testDeleteGroupByIndex () {

@@ -8,19 +8,8 @@ import org.testng.annotations.Test;
 
 public class ContactRemovalTests extends TestBase{
 	
-	//Number of removing string
-	private String numString = "last()";
-
 	//Number of removing string (int)
 	private int index = 0;
-
-	@Test
-	public void testDeleteContactByNumString () {
-		app.navigateTo().mainPage();
-		app.getContactHelper()
-			.deleteContactByNumString(numString)
-			.returnToHomePage();
-	}
 
 	@Test
 	public void testDeleteContactByIndex () {
