@@ -38,6 +38,34 @@ public class TestBase {
 		  return list.iterator();
 	  }
 
+	  @DataProvider
+	  public Iterator<Object[]> randomValidContactGenerator(){
+		  List<Object[]> list = new ArrayList<Object[]>();
+		  for (int i=0; i<4; i++) {
+		    ContactData contact = new ContactData();
+		    contact.firstname = generateRandomString();
+		    contact.lastname = generateRandomString();
+			contact.address = generateRandomString();
+		    contact.home = generateRandomNumString();
+		    contact.mobile = generateRandomNumString();
+		    contact.work = generateRandomNumString();
+		    contact.email = generateRandomEmail();
+		    contact.email2 = generateRandomEmail();
+		    contact.birthDay = generateRandomNum(31);
+		    contact.birthMonth = generateRandomMonth();
+		    contact.birthYear = generateYearBetween(1900, 2015);
+			contact.address2 = generateRandomString();
+		    contact.phone2 = generateRandomNumString();
+		    list.add(new Object[]{contact});
+		  }
+		  return list.iterator();
+	  }
+
+	  public String generateRandomEmail(){
+		  Random rnd = new Random();
+	      return (""+rnd.nextInt(99999999)+"@email.com");
+	  }
+	  
 	  public String generateRandomString(){
 		  Random rnd = new Random();
 		    if (rnd.nextInt(3) == 0){
@@ -47,37 +75,14 @@ public class TestBase {
 		    }
 	  }
 	  
-	  @DataProvider
-	  public Iterator<Object[]> randomValidContactGenerator() {
-		  List<Object[]> list = new ArrayList<Object[]>();
-		  for (int i=0; i<4; i++) {
-		    ContactData contact = new ContactData();
-		    contact.firstname = generateRandomString();
-		    contact.lastname = generateRandomString();
-		    contact.address = generateRandomString();
-		    contact.home = generateRandomNumString();
-		    contact.mobile = generateRandomNumString();
-		    contact.work = generateRandomNumString();
-		    contact.email = generateRandomEmail();
-		    contact.email2 = generateRandomEmail();
-		    contact.birthDay = generateRandomNum(31);
-		    contact.birthMonth = generateRandomMonth();
-		    contact.birthYear = generateRandomNum(2000);
-		    contact.address2 = generateRandomString();
-		    contact.phone2 = generateRandomNumString();
-		    list.add(new Object[]{contact});
-		  }
-		  return list.iterator();
-	  }
-
 	  public String generateRandomNumString(){
 		  Random rnd = new Random();
 	      return (""+rnd.nextInt(999999));
 	  }
 	  
-	  public String generateRandomEmail(){
+	  public String generateRandomNum(int ind){
 		  Random rnd = new Random();
-	      return (""+rnd.nextInt(99999999)+"@email.com");
+	      return (""+(rnd.nextInt(ind)+1));
 	  }
 	  
 	  public String generateRandomMonth(){
@@ -100,9 +105,8 @@ public class TestBase {
 		  return month;
 	  }
 
-	  public String generateRandomNum(int ind){
-		  Random rnd = new Random();
-	      return (""+(rnd.nextInt(ind)+1));
-	  }
-	  
+	  public String generateYearBetween(int start, int end) {
+	    	return "" + (start + (int) Math.round(Math.random() * (end - start)));
+	    }
+
 }

@@ -20,16 +20,13 @@ public class ContactHelper extends HelperBase {
 	public SortedListOf<ContactData> getContactsList() {
 		SortedListOf<ContactData> contactsList = new SortedListOf<ContactData>();
 	    manager.navigateTo().mainPage();
-		List<WebElement> checkboxes = findElements(By.name("selected[]"));
-		for (WebElement checkbox : checkboxes) {
-			ContactData contact = new ContactData();
-			String title = checkbox.getAttribute("title");
-			String name = title.substring("Select (".length(), title.length() - ")".length());
-			contact.firstname = name.substring(0, name.lastIndexOf(" ")); 
-			contact.lastname = name.substring(name.lastIndexOf(" ")+1);
-			contactsList.add(contact);
-		}
-		
+	    List<WebElement> rows = getContactRows();
+	    for (WebElement row : rows) {
+	    	ContactData contact = new ContactData()
+	            .setFirstname(getFirstNameFrom(row))
+	            .setLastname(getLastNameFrom(row));
+	        contactsList.add(contact);
+	    }
 		return contactsList;
 	}
 
@@ -131,5 +128,19 @@ public class ContactHelper extends HelperBase {
 		click(By.linkText("home page"));
 		return this;
 	  }
+
+	private String getLastNameFrom(WebElement row) {
+		//lastname and firstname are mixed up
+		return row.findElement(By.xpath(".//td[2]")).getText();
+	}
+
+	private String getFirstNameFrom(WebElement row) {
+		//firstname and lastname are mixed up
+		return row.findElement(By.xpath(".//td[3]")).getText();
+	}
+
+	private List<WebElement> getContactRows() {
+		return findElements(By.name("entry"));
+	}
 
 }

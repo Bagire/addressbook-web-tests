@@ -21,14 +21,22 @@ public abstract class HelperBase {
 	  this.driver = manager.driver;
 	}
 
-	protected boolean isElementPresent(By by) {
-	    try {
-	    	findElement(by);
-	      return true;
-	    } catch (NoSuchElementException e) {
-	      return false;
-	    }
-	  }
+	protected void type(By locator, String text) {
+		if (text != null) {
+			findElement(locator).clear();
+			findElement(locator).sendKeys(text);
+		}
+	}
+	
+	protected void click(By locator) {
+		findElement(locator).click();
+	}
+
+	protected void selectByText(By locator, String text) {
+		if (text != null) {
+			new Select(findElement(locator)).selectByVisibleText(text);
+		}
+	}
 
 	protected WebElement findElement(By by) {
     	return driver.findElement(by);
@@ -37,6 +45,15 @@ public abstract class HelperBase {
     protected List<WebElement> findElements(By by) {
     	return driver.findElements(by);
     }
+
+	protected boolean isElementPresent(By by) {
+	    try {
+	    	findElement(by);
+	      return true;
+	    } catch (NoSuchElementException e) {
+	      return false;
+	    }
+	  }
 
 	private boolean isAlertPresent() {
 	    try {
@@ -61,22 +78,5 @@ public abstract class HelperBase {
 	    	acceptNextAlert = true;
 	    }
 	  }
-
-	protected void type(By locator, String text) {
-		if (text != null) {
-			findElement(locator).clear();
-			findElement(locator).sendKeys(text);
-		}
-	}
-	
-	protected void click(By locator) {
-		findElement(locator).click();
-	}
-
-	protected void selectByText(By locator, String text) {
-		if (text != null) {
-			new Select(findElement(locator)).selectByVisibleText(text);
-		}
-	}
 
 }

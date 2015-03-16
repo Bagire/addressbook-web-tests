@@ -1,6 +1,17 @@
 package com.example.tests;
 
 public class ContactData implements Comparable<ContactData>{
+
+	public ContactData setFirstname(String firstname) {
+		this.firstname = firstname;
+		return this;
+	}
+
+	public ContactData setLastname(String lastname) {
+		this.lastname = lastname;
+		return this;
+	}
+
 	public String firstname;
 	public String lastname;
 	public String address;
