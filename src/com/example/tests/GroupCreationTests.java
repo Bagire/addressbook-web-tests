@@ -11,16 +11,10 @@ public class GroupCreationTests extends TestBase {
 
   @Test(dataProvider = "randomValidGroupGenerator")
   public void testGroupCreationWithValidData(GroupData group) throws Exception {
-	app.navigateTo().mainPage();
-	app.navigateTo().groupsPage();
 
 	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
-	app.getGroupHelper()
-		.initGroupCreation()
-    	.fillGroupForm(group)
-    	.submitGroupCreation()
-    	.returnToGroupPage();
+    app.getGroupHelper().createGroup(group);
 
 	List<GroupData> newList = app.getGroupHelper().getGroupsList();
     

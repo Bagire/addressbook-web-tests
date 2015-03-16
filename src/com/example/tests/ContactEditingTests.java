@@ -24,7 +24,6 @@ public class ContactEditingTests extends TestBase{
 	@Test
 	public void testEditContactByNumString () {
 	app.navigateTo().mainPage();
-    app.navigateTo().homePage();
 	app.getContactHelper()
 		.initContactByNumString(numString);
     ContactData contact = new ContactData();
@@ -38,18 +37,13 @@ public class ContactEditingTests extends TestBase{
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void testEditContactByIndex (ContactData contact) {
 	app.navigateTo().mainPage();
-    app.navigateTo().homePage();
 
 	List<ContactData> oldList = app.getContactHelper().getContactsList();
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getContactHelper()
-		.initContactByIndex(index)
-		.fillContactForm(contact, EDITING)
-		.submitContactEditing()
-		.returnToHomePage();
+	app.getContactHelper().editContactByIndex(contact, index);
 
 	List<ContactData> newList = app.getContactHelper().getContactsList();
     
@@ -63,7 +57,6 @@ public class ContactEditingTests extends TestBase{
 	@Test
 	public void testEditContactByPartName () {
 	app.navigateTo().mainPage();
-    app.navigateTo().homePage();
 	app.getContactHelper()
 		.initContactByPartName(partName);
 	ContactData contact = new ContactData();

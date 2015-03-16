@@ -14,6 +14,50 @@ public class GroupHelper extends HelperBase {
 		super(manager);
 	}
 
+	public List<GroupData> getGroupsList() {
+		List<GroupData> groupsList = new ArrayList<GroupData>();
+		manager.navigateTo().groupsPage();
+		List<WebElement> checkboxes = findElements(By.name("selected[]"));
+		for (WebElement checkbox : checkboxes) {
+			String title = checkbox.getAttribute("title");
+			String nameGroup = title.substring("Select (".length(), title.length() - ")".length());
+			groupsList.add(new GroupData().withNameGroup(nameGroup));
+		}
+		return groupsList;
+	}
+
+	public GroupHelper createGroup(GroupData group) {
+		manager.navigateTo().groupsPage();
+		initGroupCreation();
+    	fillGroupForm(group);
+    	submitGroupCreation();
+    	returnToGroupPage();
+		return this;
+	}
+
+	public GroupHelper editGroupByIndex(GroupData group, int index) {
+		initGroupByIndex(index);
+		fillGroupForm(group);
+		submitGroupEditing();
+		returnToGroupPage();
+		return this;
+	}
+
+	public GroupHelper deleteGroupByIndex(int index) {
+		findGroupBasedXPathByIndex(index);
+		submitGroupDeleting();
+		returnToGroupPage();
+		return this;
+	}
+
+	public GroupHelper deleteGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
+		submitGroupDeleting();
+		return this;
+	}
+
+// -------------------------------------------------------------
+	
 	public GroupHelper initGroupCreation() {
 		click(By.name("new"));
 		return this;
@@ -26,32 +70,10 @@ public class GroupHelper extends HelperBase {
 		return this;
 	  }
 
-	public GroupHelper submitGroupCreation() {
-		click(By.name("submit"));
-		return this;
-	  }
-
-	public GroupHelper returnToGroupPage() {
-		click(By.linkText("group page"));
-		return this;
-		}
-
 	private GroupHelper findGroupBasedXPathByNumString(String numString) {
 		String xpathString = "//input[@name='selected[]'][" + numString + "]";
 		isElementPresent(By.xpath(xpathString));
 		click(By.xpath(xpathString));
-		return this;
-	}
-
-	public GroupHelper deleteGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
-		click(By.name("delete"));
-		return this;
-	}
-
-	public GroupHelper initGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
-		click(By.name("edit"));
 		return this;
 	}
 
@@ -61,33 +83,36 @@ public class GroupHelper extends HelperBase {
 		return this;
 	}
 
-	public GroupHelper deleteGroupByIndex(int index) {
-		findGroupBasedXPathByIndex(index);
-		click(By.name("delete"));
-		return this;
-	}
-
 	public GroupHelper initGroupByIndex(int index) {
 		findGroupBasedXPathByIndex(index);
 		click(By.name("edit"));
 		return this;
 	}
 
+	public GroupHelper initGroupByNumString(String numString) {
+		findGroupBasedXPathByNumString(numString);
+		click(By.name("edit"));
+		return this;
+	}
+
+	public GroupHelper submitGroupCreation() {
+		click(By.name("submit"));
+		return this;
+	  }
+
 	public GroupHelper submitGroupEditing() {
 		click(By.name("update"));
 		return this;
 	}
 
-	public List<GroupData> getGroupsList() {
-		List<GroupData> groupsList = new ArrayList<GroupData>();
-		List<WebElement> checkboxes = findElements(By.name("selected[]"));
-		for (WebElement checkbox : checkboxes) {
-			String title = checkbox.getAttribute("title");
-			String nameGroup = title.substring("Select (".length(), title.length() - ")".length());
-			groupsList.add(new GroupData().withNameGroup(nameGroup));
-		}
-		
-		return groupsList;
+	public GroupHelper submitGroupDeleting() {
+		click(By.name("delete"));
+		return this;
 	}
+
+	public GroupHelper returnToGroupPage() {
+		click(By.linkText("group page"));
+		return this;
+		}
 
 }

@@ -19,7 +19,6 @@ public class ContactRemovalTests extends TestBase{
 	@Test
 	public void testDeleteContactByNumString () {
 		app.navigateTo().mainPage();
-	    app.navigateTo().homePage();
 		app.getContactHelper()
 			.deleteContactByNumString(numString)
 			.returnToHomePage();
@@ -28,16 +27,13 @@ public class ContactRemovalTests extends TestBase{
 	@Test
 	public void testDeleteContactByIndex () {
 		app.navigateTo().mainPage();
-	    app.navigateTo().homePage();
 
 		List<ContactData> oldList = app.getContactHelper().getContactsList();
 		
 		Random rnd = new Random();
 		index=rnd.nextInt(oldList.size()-1);
 
-		app.getContactHelper()
-			.deleteContactByIndex(index)
-			.returnToHomePage();
+		app.getContactHelper().deleteContactByIndex(index);
 
 		List<ContactData> newList = app.getContactHelper().getContactsList();
 	    

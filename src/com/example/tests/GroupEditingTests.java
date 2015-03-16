@@ -18,7 +18,6 @@ public class GroupEditingTests extends TestBase{
 
 	@Test
 	public void testEditGroupByNumString () {
-	app.navigateTo().mainPage();
 	app.navigateTo().groupsPage();
 	app.getGroupHelper()
 		.initGroupByNumString(numString);
@@ -32,19 +31,13 @@ public class GroupEditingTests extends TestBase{
 
 	@Test(dataProvider = "randomValidGroupGenerator")
 	public void testEditGroupByIndex (GroupData group) {
-	app.navigateTo().mainPage();
-	app.navigateTo().groupsPage();
 
 	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getGroupHelper()
-		.initGroupByIndex(index)
-		.fillGroupForm(group)
-		.submitGroupEditing()
-		.returnToGroupPage();
+	app.getGroupHelper().editGroupByIndex(group, index);
 	
 	List<GroupData> newList = app.getGroupHelper().getGroupsList();
     

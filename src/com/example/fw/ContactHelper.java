@@ -17,6 +17,53 @@ public class ContactHelper extends HelperBase {
 		super(manager);
 	}
 
+	public List<ContactData> getContactsList() {
+		List<ContactData> contactsList = new ArrayList<ContactData>();
+	    manager.navigateTo().mainPage();
+		List<WebElement> checkboxes = findElements(By.name("selected[]"));
+		for (WebElement checkbox : checkboxes) {
+			ContactData contact = new ContactData();
+			String title = checkbox.getAttribute("title");
+			String name = title.substring("Select (".length(), title.length() - ")".length());
+			contact.firstname = name.substring(0, name.lastIndexOf(" ")); 
+			contact.lastname = name.substring(name.lastIndexOf(" ")+1);
+			contactsList.add(contact);
+		}
+		
+		return contactsList;
+	}
+
+	public ContactHelper createContact(ContactData contact) {
+	    manager.navigateTo().mainPage();
+    	initContactCreation();
+    	fillContactForm(contact, CREATION);
+    	submitContactCreation();
+    	returnToHomePage();
+		return this;
+	}
+
+	public void editContactByIndex(ContactData contact, int index) {
+		initContactByIndex(index);
+		fillContactForm(contact, EDITING);
+		submitContactEditing();
+		returnToHomePage();
+	}
+
+	public ContactHelper deleteContactByIndex(int index) {
+		initContactByIndex(index);
+		submitContactDeleting();
+		returnToHomePage();
+		return this;
+	}
+
+	public ContactHelper deleteContactByNumString(String numString) {
+		initContactByNumString(numString);
+		submitContactDeleting();
+		return this;
+	}
+
+// -------------------------------------------------------------------------------------
+	
 	public ContactHelper initContactCreation() {
 		click(By.linkText("add new"));
 		return this;
@@ -46,42 +93,15 @@ public class ContactHelper extends HelperBase {
 		return this;
 	}
 
-	public ContactHelper submitContactCreation() {
-		click(By.name("submit"));
-		return this;
-	  }
-
-	public ContactHelper returnToHomePage() {
-		click(By.linkText("home page"));
-		return this;
-	  }
-
 	public ContactHelper initContactByNumString(String numString) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + numString + "]";
 		click(By.xpath(xpathString));
 		return this;
 	}
 
-	public ContactHelper deleteContactByNumString(String numString) {
-		initContactByNumString(numString);
-		click(By.xpath("//*[@type='submit' and @value='Delete']"));
-		return this;
-	}
-
 	public ContactHelper initContactByIndex(int index) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + (index+1) + "]";
 		click(By.xpath(xpathString));
-		return this;
-	}
-
-	public ContactHelper deleteContactByIndex(int index) {
-		initContactByIndex(index);
-		click(By.xpath("//*[@type='submit' and @value='Delete']"));
-		return this;
-	}
-
-	public ContactHelper submitContactEditing() {
-		click(By.xpath("//*[@type='submit' and @value='Update']"));
 		return this;
 	}
 
@@ -92,19 +112,24 @@ public class ContactHelper extends HelperBase {
 		return this;
 	}
 
-	public List<ContactData> getContactsList() {
-		List<ContactData> contactsList = new ArrayList<ContactData>();
-		List<WebElement> checkboxes = findElements(By.name("selected[]"));
-		for (WebElement checkbox : checkboxes) {
-			ContactData contact = new ContactData();
-			String title = checkbox.getAttribute("title");
-			String name = title.substring("Select (".length(), title.length() - ")".length());
-			contact.firstname = name.substring(0, name.lastIndexOf(" ")); 
-			contact.lastname = name.substring(name.lastIndexOf(" ")+1);
-			contactsList.add(contact);
-		}
-		
-		return contactsList;
+	public ContactHelper submitContactCreation() {
+		click(By.name("submit"));
+		return this;
+	  }
+
+	public ContactHelper submitContactEditing() {
+		click(By.xpath("//*[@type='submit' and @value='Update']"));
+		return this;
 	}
+
+	private ContactHelper submitContactDeleting() {
+		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+		return this;
+	}
+
+	public ContactHelper returnToHomePage() {
+		click(By.linkText("home page"));
+		return this;
+	  }
 
 }
