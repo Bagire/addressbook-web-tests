@@ -1,27 +1,22 @@
 package com.example.tests;
 
-import static org.testng.Assert.assertEquals;
-
-import java.util.Collections;
-import java.util.List;
-
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 import org.testng.annotations.Test;
+import com.example.utils.SortedListOf;
 
 public class GroupCreationTests extends TestBase {
 
   @Test(dataProvider = "randomValidGroupGenerator")
   public void testGroupCreationWithValidData(GroupData group) throws Exception {
 
-	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
+	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
     app.getGroupHelper().createGroup(group);
 
-	List<GroupData> newList = app.getGroupHelper().getGroupsList();
+    SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList();
     
-	oldList.add(group);
-	Collections.sort(oldList);
-	assertEquals(newList, oldList);
-
-  }
+	assertThat(newList, equalTo(oldList.withAdded(group)));
+	}
 
 }

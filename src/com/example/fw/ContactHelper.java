@@ -1,12 +1,12 @@
 package com.example.fw;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
+import com.example.utils.SortedListOf;
 
 public class ContactHelper extends HelperBase {
 
@@ -17,8 +17,8 @@ public class ContactHelper extends HelperBase {
 		super(manager);
 	}
 
-	public List<ContactData> getContactsList() {
-		List<ContactData> contactsList = new ArrayList<ContactData>();
+	public SortedListOf<ContactData> getContactsList() {
+		SortedListOf<ContactData> contactsList = new SortedListOf<ContactData>();
 	    manager.navigateTo().mainPage();
 		List<WebElement> checkboxes = findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {

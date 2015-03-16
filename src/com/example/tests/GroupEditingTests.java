@@ -1,12 +1,13 @@
 package com.example.tests;
 
-import static org.testng.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import org.testng.annotations.Test;
+
+import com.example.utils.SortedListOf;
 
 public class GroupEditingTests extends TestBase{
 
@@ -32,19 +33,16 @@ public class GroupEditingTests extends TestBase{
 	@Test(dataProvider = "randomValidGroupGenerator")
 	public void testEditGroupByIndex (GroupData group) {
 
-	List<GroupData> oldList = app.getGroupHelper().getGroupsList();
+	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList();
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
 	app.getGroupHelper().editGroupByIndex(group, index);
 	
-	List<GroupData> newList = app.getGroupHelper().getGroupsList();
+	SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList();
     
-	oldList.remove(index);
-	oldList.add(group);
-	Collections.sort(oldList);
-	assertEquals(newList, oldList);
+	assertThat(newList, equalTo(oldList.without(index).withAdded(group)));
 
 	}
 
