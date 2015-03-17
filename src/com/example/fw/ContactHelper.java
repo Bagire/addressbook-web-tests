@@ -33,7 +33,8 @@ public class ContactHelper extends HelperBase {
 	    for (WebElement row : rows) {
 	    	ContactData contact = new ContactData()
 	            .setFirstname(getFirstNameFrom(row))
-	            .setLastname(getLastNameFrom(row));
+	            .setLastname(getLastNameFrom(row))
+	            .setPhone(getPhoneFrom(row));
 	    	cachedContactsList.add(contact);
 	    }
 	}
@@ -133,6 +134,10 @@ public class ContactHelper extends HelperBase {
 	private String getFirstNameFrom(WebElement row) {
 		//3 but not 2 because firstname and lastname are mixed up
 		return row.findElement(By.xpath(".//td[3]")).getText();
+	}
+
+	private String getPhoneFrom(WebElement row) {
+		return row.findElement(By.xpath(".//td[5]")).getText();
 	}
 
 	private List<WebElement> getContactRows() {

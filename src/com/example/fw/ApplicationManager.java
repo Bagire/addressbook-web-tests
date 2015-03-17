@@ -12,6 +12,7 @@ public class ApplicationManager {
 	private NavigationHelper navigationHelper;
 	private GroupHelper groupHelper;
 	private ContactHelper contactHelper;
+	private PrintPhonesHelper printPhonesHelper;
 	
 	public ApplicationManager() {
 		driver = new FirefoxDriver();
@@ -43,6 +44,13 @@ public class ApplicationManager {
 			contactHelper = new ContactHelper(this);
 		}
 		return contactHelper;
+	}
+
+	public PrintPhonesHelper getPrintPhonesHelper () {
+		if (printPhonesHelper == null) {
+			printPhonesHelper = new PrintPhonesHelper(this);
+		}
+		return printPhonesHelper;
 	}
 
 }
