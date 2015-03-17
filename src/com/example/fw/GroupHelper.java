@@ -59,13 +59,6 @@ public class GroupHelper extends HelperBase {
 		return this;
 	}
 
-	public GroupHelper deleteGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
-		submitGroupDeleting();
-		rebuildGroupsListCache();
-		return this;
-	}
-
 // -------------------------------------------------------------
 	
 	public GroupHelper initGroupCreation() {
@@ -80,14 +73,7 @@ public class GroupHelper extends HelperBase {
 		return this;
 	  }
 
-	private GroupHelper findGroupBasedXPathByNumString(String numString) {
-		String xpathString = "//input[@name='selected[]'][" + numString + "]";
-		isElementPresent(By.xpath(xpathString));
-		click(By.xpath(xpathString));
-		return this;
-	}
-
-	private GroupHelper findGroupBasedXPathByIndex(int index) {
+	public GroupHelper findGroupBasedXPathByIndex(int index) {
 		String xpathString = "//input[@name='selected[]'][" + (index+1) + "]";
 		click(By.xpath(xpathString));
 		return this;
@@ -95,12 +81,6 @@ public class GroupHelper extends HelperBase {
 
 	public GroupHelper initGroupByIndex(int index) {
 		findGroupBasedXPathByIndex(index);
-		click(By.name("edit"));
-		return this;
-	}
-
-	public GroupHelper initGroupByNumString(String numString) {
-		findGroupBasedXPathByNumString(numString);
 		click(By.name("edit"));
 		return this;
 	}

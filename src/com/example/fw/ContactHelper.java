@@ -65,13 +65,6 @@ public class ContactHelper extends HelperBase {
 		return this;
 	}
 
-	public ContactHelper deleteContactByNumString(String numString) {
-		initContactByNumString(numString);
-		submitContactDeleting();
-		rebuildContactsListCache();
-		return this;
-	}
-
 // -------------------------------------------------------------------------------------
 	
 	public ContactHelper initContactCreation() {
@@ -103,21 +96,8 @@ public class ContactHelper extends HelperBase {
 		return this;
 	}
 
-	public ContactHelper initContactByNumString(String numString) {
-		String xpathString = "(//a/img[@alt='Edit'])[" + numString + "]";
-		click(By.xpath(xpathString));
-		return this;
-	}
-
 	public ContactHelper initContactByIndex(int index) {
 		String xpathString = "(//a/img[@alt='Edit'])[" + (index+1) + "]";
-		click(By.xpath(xpathString));
-		return this;
-	}
-
-	public ContactHelper initContactByPartName(String partName) {
-		//first found by partName
-		String xpathString = "(//img[ancestor::*[preceding-sibling::td[contains(text(),'" + partName + "')]] and @alt='Edit'])[1]";
 		click(By.xpath(xpathString));
 		return this;
 	}
