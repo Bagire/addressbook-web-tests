@@ -17,17 +17,25 @@ public class ContactHelper extends HelperBase {
 		super(manager);
 	}
 
+	private SortedListOf<ContactData> cachedContactsList;
+
 	public SortedListOf<ContactData> getContactsList() {
-		SortedListOf<ContactData> contactsList = new SortedListOf<ContactData>();
+		if (cachedContactsList == null){
+			rebuildContactsListCache();
+		}
+		return cachedContactsList;
+	}
+
+	private void rebuildContactsListCache() {
+		cachedContactsList = new SortedListOf<ContactData>();
 	    manager.navigateTo().mainPage();
 	    List<WebElement> rows = getContactRows();
 	    for (WebElement row : rows) {
 	    	ContactData contact = new ContactData()
 	            .setFirstname(getFirstNameFrom(row))
 	            .setLastname(getLastNameFrom(row));
-	        contactsList.add(contact);
+	    	cachedContactsList.add(contact);
 	    }
-		return contactsList;
 	}
 
 	public ContactHelper createContact(ContactData contact) {
@@ -36,26 +44,31 @@ public class ContactHelper extends HelperBase {
     	fillContactForm(contact, CREATION);
     	submitContactCreation();
     	returnToHomePage();
+		rebuildContactsListCache();
 		return this;
 	}
 
-	public void editContactByIndex(ContactData contact, int index) {
+	public ContactHelper editContactByIndex(ContactData contact, int index) {
 		initContactByIndex(index);
 		fillContactForm(contact, EDITING);
 		submitContactEditing();
 		returnToHomePage();
+		rebuildContactsListCache();
+		return this;
 	}
 
 	public ContactHelper deleteContactByIndex(int index) {
 		initContactByIndex(index);
 		submitContactDeleting();
 		returnToHomePage();
+		rebuildContactsListCache();
 		return this;
 	}
 
 	public ContactHelper deleteContactByNumString(String numString) {
 		initContactByNumString(numString);
 		submitContactDeleting();
+		rebuildContactsListCache();
 		return this;
 	}
 
@@ -111,16 +124,19 @@ public class ContactHelper extends HelperBase {
 
 	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
+		cachedContactsList = null;
 		return this;
 	  }
 
 	public ContactHelper submitContactEditing() {
 		click(By.xpath("//*[@type='submit' and @value='Update']"));
+		cachedContactsList = null;
 		return this;
 	}
 
-	private ContactHelper submitContactDeleting() {
+	public ContactHelper submitContactDeleting() {
 		click(By.xpath("//*[@type='submit' and @value='Delete']"));
+		cachedContactsList = null;
 		return this;
 	}
 
@@ -130,12 +146,12 @@ public class ContactHelper extends HelperBase {
 	  }
 
 	private String getLastNameFrom(WebElement row) {
-		//lastname and firstname are mixed up
+		//2 but not 3 because lastname and firstname are mixed up
 		return row.findElement(By.xpath(".//td[2]")).getText();
 	}
 
 	private String getFirstNameFrom(WebElement row) {
-		//firstname and lastname are mixed up
+		//3 but not 2 because firstname and lastname are mixed up
 		return row.findElement(By.xpath(".//td[3]")).getText();
 	}
 
