@@ -19,6 +19,7 @@ public class PrintPhonesHelper extends HelperBase{
 	String phone = "";
 	
 	public SortedListOf<ContactData> getPrintList() {
+		manager.navigateTo().printPhones();
 		SortedListOf<ContactData> printList = new SortedListOf<ContactData>();
 	    List<WebElement> elems = getPrintCells();
 	    for (WebElement elem : elems) {

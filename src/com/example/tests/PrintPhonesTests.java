@@ -11,9 +11,7 @@ public class PrintPhonesTests extends TestBase{
 
 	@Test
 	public void testPrintPhones () {
-		app.navigateTo().mainPage();
 		SortedListOf<ContactData> ContactsList = app.getContactHelper().getContactsList();
-		app.navigateTo().printPhones();
 		SortedListOf<ContactData> PrintList = app.getPrintPhonesHelper().getPrintList();
 		assertThat(ContactsList, equalTo(PrintList));
 
