@@ -1,11 +1,19 @@
 package com.example.tests;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import static com.example.fw.DataGenerator.generateRandomString;
+import static com.example.fw.DataGenerator.generateRandomNumString;
+import static com.example.fw.DataGenerator.generateRandomEmail;
+import static com.example.fw.DataGenerator.generateRandomMonth;
+import static com.example.fw.DataGenerator.generateYearBetween;
+import static com.example.fw.DataGenerator.generateRandomNum;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -66,6 +74,40 @@ public class ContactDataGenerator {
 		writer.close();
 	}
 
+	public static List<ContactData> loadContactsFromXmlFile(File file) throws IOException {
+		XStream xstream = new XStream();
+		xstream.alias("contact", ContactData.class);
+		return (List<ContactData>) xstream.fromXML(file);
+	}
+
+	public static List<ContactData> loadContactsFromCsvFile(File file) throws IOException {
+		  List<ContactData> list = new ArrayList<ContactData>();
+		  FileReader reader = new FileReader(file);
+		  BufferedReader buffReader = new BufferedReader(reader);
+		  String line = buffReader.readLine();
+		  while (line != null){
+			  String[] part = line.split(",");
+			  ContactData contact = new ContactData();
+			  contact.firstname = part[0];
+			  contact.lastname = part[1];
+			  contact.address = part[2];
+			  contact.home = part[3];
+			  contact.mobile = part[4];
+			  contact.work = part[5];
+			  contact.email = part[6];
+			  contact.email2 = part[7];
+			  contact.birthDay = part[8];
+			  contact.birthMonth = part[9];
+			  contact.birthYear = part[10];
+			  contact.address2 = part[11];
+			  contact.phone2 = part[12];
+			  list.add(contact);
+			  line = buffReader.readLine();
+		  }
+		  buffReader.close();
+		  return list;
+	}
+
 	public static List<ContactData> generateRandomContacts(int amount) {
 		  List<ContactData> list = new ArrayList<ContactData>();
 		  for (int i=0; i<amount; i++) {
@@ -87,53 +129,5 @@ public class ContactDataGenerator {
 		  }
 		  return list;
 	}
-
-	  public static String generateRandomEmail(){
-		  Random rnd = new Random();
-	      return (""+rnd.nextInt(99999999)+"@email.com");
-	  }
-	  
-	  public static String generateRandomString(){
-		  Random rnd = new Random();
-		    if (rnd.nextInt(3) == 0){
-			    return "";
-		    }else{
-			    return "test" + rnd.nextInt();
-		    }
-	  }
-	  
-	  public static String generateRandomNumString(){
-		  Random rnd = new Random();
-	      return (""+rnd.nextInt(999999));
-	  }
-	  
-	  public static String generateRandomNum(int ind){
-		  Random rnd = new Random();
-	      return (""+(rnd.nextInt(ind)+1));
-	  }
-	  
-	  public static String generateRandomMonth(){
-		  String month="";
-		  Random rnd = new Random();
-		  switch (rnd.nextInt(12)){
-		    case 0:	month = "January"; break;
-		    case 1: month = "February"; break;
-		    case 2: month = "March"; break;
-		    case 3: month = "April"; break;
-		    case 4: month = "May"; break;
-		    case 5: month = "June"; break;
-		    case 6: month = "July"; break;
-		    case 7: month = "August"; break;
-		    case 8: month = "September"; break;
-		    case 9: month = "October"; break;
-		    case 10: month = "November"; break;
-		    case 11: month = "December"; break;
-		    }
-		  return month;
-	  }
-
-	  public static String generateYearBetween(int start, int end) {
-	    	return "" + (start + (int) Math.round(Math.random() * (end - start)));
-	    }
 
 }

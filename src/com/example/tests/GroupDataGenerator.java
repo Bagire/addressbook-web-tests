@@ -3,8 +3,10 @@ package com.example.tests;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 import com.thoughtworks.xstream.XStream;
+
+import static com.example.fw.DataGenerator.generateRandomString;
 
 public class GroupDataGenerator {
 
@@ -46,12 +48,36 @@ public class GroupDataGenerator {
 	private static void saveGroupsToCsvFile(List<GroupData> groups, File file) throws IOException {
 		FileWriter writer = new FileWriter(file);
 		for (GroupData group : groups) {
-			writer.write(group.getNameGroup() + "," + group.getHeader() + "," + group.getFooter() + "\n");
+			writer.write(group.getNameGroup() + "," + group.getHeader() + "," + group.getFooter() + ",!\n");
 		}
 		writer.close();
 	}
 
-	public static List<GroupData> generateRandomGroups(int amount) {
+	public static List<GroupData> loadGroupsFromXmlFile(File file) throws IOException {
+		XStream xstream = new XStream();
+		xstream.alias("group", GroupData.class);
+		return (List<GroupData>) xstream.fromXML(file);
+	}
+
+	public static List<GroupData> loadGroupsFromCsvFile(File file) throws IOException {
+		  List<GroupData> list = new ArrayList<GroupData>();
+		  FileReader reader = new FileReader(file);
+		  BufferedReader buffReader = new BufferedReader(reader);
+		  String line = buffReader.readLine();
+		  while (line != null){
+			  String[] part = line.split(",");
+			  GroupData group = new GroupData()
+		    	.withNameGroup(part[0])
+		    	.withHeader(part[1])
+		    	.withFooter(part[2]);
+			  list.add(group);
+			  line = buffReader.readLine();
+		  }
+		  buffReader.close();
+		  return list;
+	}
+
+		public static List<GroupData> generateRandomGroups(int amount) {
 		  List<GroupData> list = new ArrayList<GroupData>();
 		  for (int i=0; i<amount; i++) {
 		    GroupData group = new GroupData()
@@ -63,13 +89,4 @@ public class GroupDataGenerator {
 		  return list;
 	}
 
-	public static String generateRandomString(){
-		Random rnd = new Random();
-		   if (rnd.nextInt(3) == 0){
-			   return "";
-		   }else{
-			   return "test" + rnd.nextInt();
-		   }
-	}
-	  
 }
