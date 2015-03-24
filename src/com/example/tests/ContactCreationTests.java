@@ -1,6 +1,6 @@
 package com.example.tests;
 
-//import static com.example.tests.ContactDataGenerator.loadContactsFromCsvFile;
+import static com.example.tests.ContactDataGenerator.loadContactsFromCsvFile;
 import static com.example.tests.ContactDataGenerator.loadContactsFromXmlFile;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -18,12 +18,16 @@ public class ContactCreationTests extends TestBase {
 
 	@DataProvider
 	public Iterator<Object[]> groupsFromFile()  throws IOException {
-//	  return wrapContactsForProvider (loadContactsFromCsvFile(new File("contacts.txt"))).iterator();
-	  return wrapContactsForProvider (loadContactsFromXmlFile(new File("contacts.xml"))).iterator();
+	  String dataFile = app.properties.getProperty("contactsDataFile");
+	  if (dataFile.endsWith(".xml") == true) {
+		  return wrapContactsForProvider (loadContactsFromXmlFile(new File(dataFile))).iterator();
+	  } else {
+		  return wrapContactsForProvider (loadContactsFromCsvFile(new File(dataFile))).iterator();
+	  }
 	}
 
 //  @Test(dataProvider = "randomValidContactGenerator")
-  @Test(dataProvider = "randomValidContactGenerator")
+  @Test(dataProvider = "groupsFromFile")
   public void testContactCreationWithValidData(ContactData contact) throws Exception {
 
 	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList();

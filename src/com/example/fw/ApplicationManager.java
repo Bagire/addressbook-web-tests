@@ -10,13 +10,12 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class ApplicationManager {
 	
 	public WebDriver driver;
-	public String baseUrl;
 
 	private NavigationHelper navigationHelper;
 	private GroupHelper groupHelper;
 	private ContactHelper contactHelper;
 	private PrintPhonesHelper printPhonesHelper;
-	private Properties properties;
+	public Properties properties;
 	
 	public ApplicationManager(Properties properties) {
 		this.properties = properties;
@@ -28,9 +27,9 @@ public class ApplicationManager {
 		} else {
 			throw new Error("Unsupported browser: " + browser);
 		}
-	    baseUrl = properties.getProperty("baseUrl");
-	    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		driver.get(baseUrl + "addressbookv4.1.4/");
+	    long timeOut = Long.parseLong(properties.getProperty("timeOut"));
+	    driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
+		driver.get(properties.getProperty("baseUrl") + properties.getProperty("addrUrl"));
 	}
 
 	public void stop() {
