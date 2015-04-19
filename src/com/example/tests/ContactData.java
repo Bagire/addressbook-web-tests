@@ -17,6 +17,62 @@ public class ContactData implements Comparable<ContactData>{
 		return this;
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public void setWork(String work) {
+		this.work = work;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public void setBirthMonth(String birthMonth) {
+		this.birthMonth = birthMonth;
+	}
+
+	public void setBirthYear(String birthYear) {
+		this.birthYear = birthYear;
+	}
+
+	public void setNewGroup(String newGroup) {
+		this.newGroup = newGroup;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
+
+	public String getId() {
+		return id;
+	}
+
 	public String getFirstname() {
 		return firstname;
 	}
@@ -73,6 +129,7 @@ public class ContactData implements Comparable<ContactData>{
 		return phone2;
 	}
 
+	public String id;
 	public String firstname;
 	public String lastname;
 	public String address;

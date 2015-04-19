@@ -17,12 +17,13 @@ public class GroupEditingTests extends TestBase{
 	@Test(dataProvider = "randomValidGroupGenerator")
 	public void testEditGroupByIndex (GroupData group) {
 
-	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList();
+//	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList();
+	SortedListOf<GroupData> oldList = new SortedListOf<GroupData>(app.getHibernateHelper().listGroups());
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getGroupHelper().editGroupByIndex(group, index);
+	app.getGroupHelper().editGroupByIndex(group, index, oldList);
 	
 	SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList();
     

@@ -2,8 +2,11 @@ package com.example.tests;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+
 import com.example.utils.SortedListOf;
+
 import java.util.Random;
+
 import org.testng.annotations.Test;
 
 public class ContactEditingTests extends TestBase{
@@ -15,12 +18,13 @@ public class ContactEditingTests extends TestBase{
 	public void testEditContactByIndex (ContactData contact) {
 	app.navigateTo().mainPage();
 
-	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList();
+//	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList();
+	SortedListOf<ContactData> oldList = new SortedListOf<ContactData>(app.getHibernateHelper().listContacts());
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
-	app.getContactHelper().editContactByIndex(contact, index);
+	app.getContactHelper().editContactByIndex(contact, index, oldList);
 
 	SortedListOf<ContactData> newList = app.getContactHelper().getContactsList();
     

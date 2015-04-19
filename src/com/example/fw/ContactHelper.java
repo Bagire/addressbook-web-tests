@@ -8,7 +8,10 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.ContactData;
 import com.example.utils.SortedListOf;
 
-public class ContactHelper extends HelperBase {
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
+public class ContactHelper extends WebDriverHelperBase {
 
 	public static boolean CREATION = true;
 	public static boolean EDITING = true;
@@ -49,8 +52,9 @@ public class ContactHelper extends HelperBase {
 		return this;
 	}
 
-	public ContactHelper editContactByIndex(ContactData contact, int index) {
+	public ContactHelper editContactByIndex(ContactData contact, int index, SortedListOf<ContactData> list) {
 		initContactByIndex(index);
+		checkEqualContactData(list, index);
 		fillContactForm(contact, EDITING);
 		submitContactEditing();
 		returnToHomePage();
@@ -64,6 +68,23 @@ public class ContactHelper extends HelperBase {
 		returnToHomePage();
 		rebuildContactsListCache();
 		return this;
+	}
+
+	public List<ContactData> fillEmptyPhones(List<ContactData> list) {
+		for (ContactData contact : list) {
+			if (contact.home.equals("")){
+				contact.home = contact.mobile;
+			}
+			if (contact.home.equals("")){
+				contact.home = contact.work;
+			}
+		}
+		return list;
+	}
+
+	private void checkEqualContactData(SortedListOf<ContactData> list, int index) {
+		ContactData contact = list.get(index);
+		assertThat(contact, equalTo(getContactDataFromPage()));
 	}
 
 // -------------------------------------------------------------------------------------
@@ -142,6 +163,24 @@ public class ContactHelper extends HelperBase {
 
 	private List<WebElement> getContactRows() {
 		return findElements(By.name("entry"));
+	}
+
+	private ContactData getContactDataFromPage() {
+		ContactData	contact = new ContactData();
+		contact.firstname = findElement(By.name("firstname")).getAttribute("value");
+		contact.lastname = findElement(By.name("lastname")).getAttribute("value");
+		contact.address = findElement(By.name("address")).getText();
+		contact.home = findElement(By.name("home")).getAttribute("value");
+		contact.mobile = findElement(By.name("mobile")).getAttribute("value");
+		contact.work = findElement(By.name("work")).getAttribute("value");
+		contact.email = findElement(By.name("email")).getAttribute("value");
+		contact.email2 = findElement(By.name("email2")).getAttribute("value");
+		contact.birthDay = findElement(By.xpath(".//select[@name='bday']/option[@selected='selected']")).getText();
+		contact.birthMonth = findElement(By.xpath(".//select[@name='bmonth']/option[@selected='selected']")).getText();
+		contact.birthYear = findElement(By.name("byear")).getAttribute("value");
+		contact.address2 = findElement(By.name("address2")).getText();
+		contact.phone2 = findElement(By.name("phone2")).getAttribute("value");
+		return contact;
 	}
 
 }

@@ -9,27 +9,17 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 public class ApplicationManager {
 	
-	public WebDriver driver;
+	private WebDriver driver;
 
 	private NavigationHelper navigationHelper;
 	private GroupHelper groupHelper;
 	private ContactHelper contactHelper;
 	private PrintPhonesHelper printPhonesHelper;
+	private HibernateHelper hibernateHelper;
 	public Properties properties;
-	
+
 	public ApplicationManager(Properties properties) {
 		this.properties = properties;
-		String browser = properties.getProperty("browser");
-		if ("firefox".equals(browser)) {
-			driver = new FirefoxDriver();
-		} else if ("ie".equals(browser)) {
-			driver = new InternetExplorerDriver();
-		} else {
-			throw new Error("Unsupported browser: " + browser);
-		}
-	    long timeOut = Long.parseLong(properties.getProperty("timeOut"));
-	    driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
-		driver.get(properties.getProperty("baseUrl") + properties.getProperty("addrUrl"));
 	}
 
 	public void stop() {
@@ -62,6 +52,30 @@ public class ApplicationManager {
 			printPhonesHelper = new PrintPhonesHelper(this);
 		}
 		return printPhonesHelper;
+	}
+
+	public WebDriver getDriver() {
+		if (driver == null) {
+			String browser = properties.getProperty("browser");
+			if ("firefox".equals(browser)) {
+				driver = new FirefoxDriver();
+			} else if ("ie".equals(browser)) {
+				driver = new InternetExplorerDriver();
+			} else {
+				throw new Error("Unsupported browser: " + browser);
+			}
+		    long timeOut = Long.parseLong(properties.getProperty("timeOut"));
+		    driver.manage().timeouts().implicitlyWait(timeOut, TimeUnit.SECONDS);
+			driver.get(properties.getProperty("baseUrl") + properties.getProperty("addrUrl"));
+		}
+		return driver;
+	}
+
+	public HibernateHelper getHibernateHelper() {
+		if (hibernateHelper == null) {
+			hibernateHelper = new HibernateHelper(this);
+		}
+		return hibernateHelper;
 	}
 
 }

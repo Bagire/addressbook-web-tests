@@ -8,7 +8,10 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.GroupData;
 import com.example.utils.SortedListOf;
 
-public class GroupHelper extends HelperBase {
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
+public class GroupHelper extends WebDriverHelperBase {
 
 	public GroupHelper(ApplicationManager manager) {
 		super(manager);
@@ -42,8 +45,9 @@ public class GroupHelper extends HelperBase {
 		return this;
 	}
 
-	public GroupHelper editGroupByIndex(GroupData group, int index) {
+	public GroupHelper editGroupByIndex(GroupData group, int index, SortedListOf<GroupData> list) {
 		initGroupByIndex(index);
+		checkEqualGroupData(list, index);
 		fillGroupForm(group);
 		submitGroupEditing();
 		returnToGroupPage();
@@ -57,6 +61,11 @@ public class GroupHelper extends HelperBase {
 		returnToGroupPage();
 		rebuildGroupsListCache();
 		return this;
+	}
+
+	private void checkEqualGroupData(SortedListOf<GroupData> list, int index) {
+		GroupData group = list.get(index);
+		assertThat(group, equalTo(getGroupDataFromPage()));
 	}
 
 // -------------------------------------------------------------
@@ -116,6 +125,14 @@ public class GroupHelper extends HelperBase {
 
 	private List<WebElement> getGroupRows() {
 		return findElements(By.name("selected[]"));
+	}
+
+	private GroupData getGroupDataFromPage() {
+		GroupData group = new GroupData();
+		group.setNameGroup(findElement(By.name("group_name")).getAttribute("value"));
+		group.setHeader (findElement(By.name("group_header")).getText().replace("\r", ""));
+		group.setFooter (findElement(By.name("group_footer")).getText().replace("\r", ""));
+		return group;
 	}
 
 }
