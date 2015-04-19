@@ -16,6 +16,9 @@ import org.testng.annotations.Test;
 
 public class ContactCreationTests extends TestBase {
 
+	private static final String DATABASE = "database";
+	private static final String INTERFACE = "interface";
+
 	@DataProvider
 	public Iterator<Object[]> groupsFromFile()  throws IOException {
 	  String dataFile = app.properties.getProperty("contactsDataFile");
@@ -30,12 +33,12 @@ public class ContactCreationTests extends TestBase {
   @Test(dataProvider = "groupsFromFile")
   public void testContactCreationWithValidData(ContactData contact) throws Exception {
 
-//	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList();
-	SortedListOf<ContactData> oldList = new SortedListOf<ContactData>(app.getHibernateHelper().listContacts());
+//	SortedListOf<ContactData> oldList = new SortedListOf<ContactData>(app.getHibernateHelper().listContacts());
+	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList(DATABASE);
 	
     app.getContactHelper().createContact(contact);
     
-    SortedListOf<ContactData> newList = app.getContactHelper().getContactsList();
+    SortedListOf<ContactData> newList = app.getContactHelper().getContactsList(INTERFACE);
     
 	assertThat(newList, equalTo(oldList.withAdded(contact)));
   }

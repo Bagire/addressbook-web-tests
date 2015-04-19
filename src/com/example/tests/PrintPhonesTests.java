@@ -9,9 +9,11 @@ import com.example.utils.SortedListOf;
 
 public class PrintPhonesTests extends TestBase{
 
+	private static final String INTERFACE = "interface";
+
 	@Test
 	public void testPrintPhones () {
-		SortedListOf<ContactData> ContactsList = app.getContactHelper().getContactsList();
+		SortedListOf<ContactData> ContactsList = app.getContactHelper().getContactsList(INTERFACE);
 		SortedListOf<ContactData> PrintList = app.getPrintPhonesHelper().getPrintList();
 		assertThat(ContactsList, equalTo(PrintList));
 

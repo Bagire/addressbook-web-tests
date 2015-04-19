@@ -13,6 +13,8 @@ import static org.junit.Assert.assertThat;
 
 public class ContactHelper extends WebDriverHelperBase {
 
+	private static final String INTERFACE = "interface";
+	private static final String DATABASE = "database";
 	public static boolean CREATION = true;
 	public static boolean EDITING = true;
 	
@@ -22,23 +24,27 @@ public class ContactHelper extends WebDriverHelperBase {
 
 	private SortedListOf<ContactData> cachedContactsList;
 
-	public SortedListOf<ContactData> getContactsList() {
+	public SortedListOf<ContactData> getContactsList(String method) {
 		if (cachedContactsList == null){
-			rebuildContactsListCache();
+			rebuildContactsListCache(method);
 		}
 		return cachedContactsList;
 	}
 
-	private void rebuildContactsListCache() {
-		cachedContactsList = new SortedListOf<ContactData>();
+	private void rebuildContactsListCache(String method) {
 	    manager.navigateTo().mainPage();
-	    List<WebElement> rows = getContactRows();
-	    for (WebElement row : rows) {
-	    	ContactData contact = new ContactData()
-	            .setFirstname(getFirstNameFrom(row))
-	            .setLastname(getLastNameFrom(row))
-	            .setPhone(getPhoneFrom(row));
-	    	cachedContactsList.add(contact);
+	    if (method.equals(DATABASE)) {
+	    	cachedContactsList = new SortedListOf<ContactData>(manager.getHibernateHelper().listContacts());
+	    } else if (method.equals(INTERFACE)) {
+	    	cachedContactsList = new SortedListOf<ContactData>();
+	    	List<WebElement> rows = getContactRows();
+	    	for (WebElement row : rows) {
+	    		ContactData contact = new ContactData()
+	    		.setFirstname(getFirstNameFrom(row))
+	    		.setLastname(getLastNameFrom(row))
+	    		.setPhone(getPhoneFrom(row));
+	    		cachedContactsList.add(contact);
+	    	}
 	    }
 	}
 
@@ -48,7 +54,7 @@ public class ContactHelper extends WebDriverHelperBase {
     	fillContactForm(contact, CREATION);
     	submitContactCreation();
     	returnToHomePage();
-		rebuildContactsListCache();
+		rebuildContactsListCache(INTERFACE);
 		return this;
 	}
 
@@ -58,7 +64,7 @@ public class ContactHelper extends WebDriverHelperBase {
 		fillContactForm(contact, EDITING);
 		submitContactEditing();
 		returnToHomePage();
-		rebuildContactsListCache();
+		rebuildContactsListCache(INTERFACE);
 		return this;
 	}
 
@@ -66,7 +72,7 @@ public class ContactHelper extends WebDriverHelperBase {
 		initContactByIndex(index);
 		submitContactDeleting();
 		returnToHomePage();
-		rebuildContactsListCache();
+		rebuildContactsListCache(INTERFACE);
 		return this;
 	}
 

@@ -16,6 +16,9 @@ import com.example.utils.SortedListOf;
 
 public class GroupCreationTests extends TestBase {
 
+	private static final String INTERFACE = "interface";
+	private static final String DATABASE = "database";
+
 	@DataProvider
 	public Iterator<Object[]> groupsFromFile()  throws IOException {
 	  String dataFile = app.properties.getProperty("groupsDataFile");
@@ -30,13 +33,12 @@ public class GroupCreationTests extends TestBase {
   @Test(dataProvider = "groupsFromFile")
   public void testGroupCreationWithValidData(GroupData group) throws Exception {
 
-//	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList();
-	SortedListOf<GroupData> oldList = new SortedListOf<GroupData>(app.getHibernateHelper().listGroups());
+//    SortedListOf<GroupData> oldList = new SortedListOf<GroupData>(app.getHibernateHelper().listGroups());
+	SortedListOf<GroupData> oldList = app.getGroupHelper().getGroupsList(DATABASE);
 	
     app.getGroupHelper().createGroup(group);
 
-//    SortedListOf<GroupData> newList = new SortedListOf<GroupData>(app.getHibernateHelper().listGroups());
-    SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList();
+    SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList(INTERFACE);
     
 	assertThat(newList, equalTo(oldList.withAdded(group)));
 	}

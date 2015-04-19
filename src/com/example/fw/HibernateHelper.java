@@ -16,7 +16,6 @@ public class HibernateHelper extends HelperBase {
 	}
 
 	public List<GroupData> listGroups() {
-		manager.navigateTo().groupsPage();
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		try {
@@ -28,7 +27,6 @@ public class HibernateHelper extends HelperBase {
 	}
 
 	public List<ContactData> listContacts() {
-	    manager.navigateTo().mainPage();
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction trans = session.beginTransaction();
 		try {

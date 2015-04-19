@@ -11,6 +11,9 @@ import org.testng.annotations.Test;
 
 public class ContactEditingTests extends TestBase{
 
+	private static final String DATABASE = "database";
+	private static final String INTERFACE = "interface";
+
 	//Number of editing string (int)
 	private int index = 0;
 
@@ -18,15 +21,14 @@ public class ContactEditingTests extends TestBase{
 	public void testEditContactByIndex (ContactData contact) {
 	app.navigateTo().mainPage();
 
-//	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList();
-	SortedListOf<ContactData> oldList = new SortedListOf<ContactData>(app.getHibernateHelper().listContacts());
+	SortedListOf<ContactData> oldList = app.getContactHelper().getContactsList(DATABASE);
 	
 	Random rnd = new Random();
 	index=rnd.nextInt(oldList.size()-1);
 
 	app.getContactHelper().editContactByIndex(contact, index, oldList);
 
-	SortedListOf<ContactData> newList = app.getContactHelper().getContactsList();
+	SortedListOf<ContactData> newList = app.getContactHelper().getContactsList(INTERFACE);
     
 	assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
 

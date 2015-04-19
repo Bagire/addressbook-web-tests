@@ -13,25 +13,32 @@ import static org.junit.Assert.assertThat;
 
 public class GroupHelper extends WebDriverHelperBase {
 
+	private static final String DATABASE = "database";
+	private static final String INTERFACE = "interface";
+
 	public GroupHelper(ApplicationManager manager) {
 		super(manager);
 	}
 
 	private SortedListOf<GroupData> cachedGroupsList;
 	
-	public SortedListOf<GroupData> getGroupsList() {
+	public SortedListOf<GroupData> getGroupsList(String method) {
 		if (cachedGroupsList == null){
-			rebuildGroupsListCache();
+			rebuildGroupsListCache(method);
 		}
 		return cachedGroupsList;
 	}
 
-	private void rebuildGroupsListCache() {
-		cachedGroupsList = new SortedListOf<GroupData>();
+	private void rebuildGroupsListCache(String method) {
 		manager.navigateTo().groupsPage();
-		List<WebElement> checkboxes = getGroupRows();
-		for (WebElement checkbox : checkboxes) {
-			cachedGroupsList.add(new GroupData().withNameGroup(getNameGroup(checkbox)));
+		if (method.equals(DATABASE)){
+			cachedGroupsList = new SortedListOf<GroupData>(manager.getHibernateHelper().listGroups());
+		} else if (method.equals(INTERFACE)){
+			cachedGroupsList = new SortedListOf<GroupData>();
+			List<WebElement> checkboxes = getGroupRows();
+			for (WebElement checkbox : checkboxes) {
+				cachedGroupsList.add(new GroupData().withNameGroup(getNameGroup(checkbox)));
+			}
 		}
 	}
 
@@ -41,7 +48,7 @@ public class GroupHelper extends WebDriverHelperBase {
     	fillGroupForm(group);
     	submitGroupCreation();
     	returnToGroupPage();
-		rebuildGroupsListCache();
+		rebuildGroupsListCache(INTERFACE);
 		return this;
 	}
 
@@ -51,7 +58,7 @@ public class GroupHelper extends WebDriverHelperBase {
 		fillGroupForm(group);
 		submitGroupEditing();
 		returnToGroupPage();
-		rebuildGroupsListCache();
+		rebuildGroupsListCache(INTERFACE);
 		return this;
 	}
 
@@ -59,7 +66,7 @@ public class GroupHelper extends WebDriverHelperBase {
 		findGroupBasedXPathByIndex(index);
 		submitGroupDeleting();
 		returnToGroupPage();
-		rebuildGroupsListCache();
+		rebuildGroupsListCache(INTERFACE);
 		return this;
 	}
 
