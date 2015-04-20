@@ -33,4 +33,33 @@ public class ContactRemovalTests extends TestBase{
 		assertThat(newList, equalTo(oldList.without(index)));
 
 		}
+
+	@Test
+	public void testDeleteContactByIndexWithModel () {
+		app.navigateTo().mainPage();
+
+		app.getModel().setContacts(app.getHibernateHelper().listContacts());
+		
+		SortedListOf<ContactData> oldList = app.getModel().getContacts();
+		
+		Random rnd = new Random();
+		index=rnd.nextInt(oldList.size()-1);
+
+		app.getContactHelper().deleteContactByIndexWithModel(index);
+
+		SortedListOf<ContactData> newList = app.getModel().getContacts();
+	    
+		assertThat(newList, equalTo(oldList.without(index)));
+
+		if (needCheck()) {
+			if ("yes".equals(app.getProperty("check.db"))) {
+				assertThat(app.getModel().getContacts(), equalTo(app.getHibernateHelper().listContacts()));
+			}
+			if ("yes".equals(app.getProperty("check.ui"))) {
+				assertThat(app.getModel().getContacts(), equalTo(app.getContactHelper().getUiContactsList()));
+			}
+		}
+	  
+	}
+
 }

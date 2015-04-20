@@ -17,13 +17,25 @@ public class ApplicationManager {
 	private PrintPhonesHelper printPhonesHelper;
 	private HibernateHelper hibernateHelper;
 	public Properties properties;
-
+	private ApplicationModel model;
+	
 	public ApplicationManager(Properties properties) {
 		this.properties = properties;
+		model = new ApplicationModel();
+//		model.setGroups(getHibernateHelper().listGroups());
+//		model.setContacts(getHibernateHelper().listContacts());
 	}
 
 	public void stop() {
 	    driver.quit();
+	}
+	
+	public ApplicationModel getModel(){
+		return model;
+	}
+	
+	public String getProperty(String key) {
+		return properties.getProperty(key);
 	}
 	
 	public NavigationHelper navigateTo () {

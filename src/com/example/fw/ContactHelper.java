@@ -58,6 +58,16 @@ public class ContactHelper extends WebDriverHelperBase {
 		return this;
 	}
 
+	public ContactHelper createContactWithModel(ContactData contact) {
+	    manager.navigateTo().mainPage();
+    	initContactCreation();
+    	fillContactForm(contact, CREATION);
+    	submitContactCreation();
+    	returnToHomePage();
+    	manager.getModel().addContact(contact);
+		return this;
+	}
+
 	public ContactHelper editContactByIndex(ContactData contact, int index, SortedListOf<ContactData> list) {
 		initContactByIndex(index);
 		checkEqualContactData(list, index);
@@ -68,11 +78,29 @@ public class ContactHelper extends WebDriverHelperBase {
 		return this;
 	}
 
+	public ContactHelper editContactByIndexWithModel(ContactData contact, int index, SortedListOf<ContactData> list) {
+		initContactByIndex(index);
+		checkEqualContactData(list, index);
+		fillContactForm(contact, EDITING);
+		submitContactEditing();
+		returnToHomePage();
+    	manager.getModel().removeContact(index).addContact(contact);
+		return this;
+	}
+
 	public ContactHelper deleteContactByIndex(int index) {
 		initContactByIndex(index);
 		submitContactDeleting();
 		returnToHomePage();
 		rebuildContactsListCache(INTERFACE);
+		return this;
+	}
+
+	public ContactHelper deleteContactByIndexWithModel(int index) {
+		initContactByIndex(index);
+		submitContactDeleting();
+		returnToHomePage();
+    	manager.getModel().removeContact(index);
 		return this;
 	}
 
@@ -93,7 +121,21 @@ public class ContactHelper extends WebDriverHelperBase {
 		assertThat(contact, equalTo(getContactDataFromPage()));
 	}
 
-// -------------------------------------------------------------------------------------
+	public SortedListOf<ContactData> getUiContactsList() {
+	    manager.navigateTo().mainPage();
+	    SortedListOf<ContactData> contacts = new SortedListOf<ContactData>();
+    	List<WebElement> rows = getContactRows();
+    	for (WebElement row : rows) {
+    		ContactData contact = new ContactData()
+    		.setFirstname(getFirstNameFrom(row))
+    		.setLastname(getLastNameFrom(row))
+    		.setPhone(getPhoneFrom(row));
+    		contacts.add(contact);
+    	}
+	    return contacts;
+	}
+
+	// -------------------------------------------------------------------------------------
 	
 	public ContactHelper initContactCreation() {
 		click(By.linkText("add new"));

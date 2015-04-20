@@ -34,5 +34,24 @@ public class ContactEditingTests extends TestBase{
 
 	}
 
+	@Test(dataProvider = "randomValidContactGenerator")
+	public void testEditContactByIndexWithModel (ContactData contact) {
+	app.navigateTo().mainPage();
+
+	app.getModel().setContacts(app.getHibernateHelper().listContacts());
+	
+	SortedListOf<ContactData> oldList = app.getModel().getContacts();
+	
+	Random rnd = new Random();
+	index=rnd.nextInt(oldList.size()-1);
+
+	app.getContactHelper().editContactByIndexWithModel(contact, index, oldList);
+
+	SortedListOf<ContactData> newList = app.getModel().getContacts();
+    
+	assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
+
+	}
+
 }
 

@@ -43,4 +43,28 @@ public class ContactCreationTests extends TestBase {
 	assertThat(newList, equalTo(oldList.withAdded(contact)));
   }
 
+  @Test(dataProvider = "groupsFromFile")
+  public void testContactCreationWithValidDataWithModel(ContactData contact) throws Exception {
+
+	app.getModel().setContacts(app.getHibernateHelper().listContacts());
+	
+	SortedListOf<ContactData> oldList = app.getModel().getContacts();
+	
+    app.getContactHelper().createContactWithModel(contact);
+    
+	SortedListOf<ContactData> newList = app.getModel().getContacts();
+    
+	assertThat(newList, equalTo(oldList.withAdded(contact)));
+
+	if (needCheck()) {
+		if ("yes".equals(app.getProperty("check.db"))) {
+			assertThat(app.getModel().getContacts(), equalTo(app.getHibernateHelper().listContacts()));
+		}
+		if ("yes".equals(app.getProperty("check.ui"))) {
+			assertThat(app.getModel().getContacts(), equalTo(app.getContactHelper().getUiContactsList()));
+		}
+	}
+  
+  }
+
 }

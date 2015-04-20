@@ -41,6 +41,31 @@ public class GroupCreationTests extends TestBase {
     SortedListOf<GroupData> newList = app.getGroupHelper().getGroupsList(INTERFACE);
     
 	assertThat(newList, equalTo(oldList.withAdded(group)));
+
+  }
+
+  @Test(dataProvider = "groupsFromFile")
+  public void testGroupCreationWithValidDataWithModel(GroupData group) throws Exception {
+
+	app.getModel().setGroups(app.getHibernateHelper().listGroups());
+
+	SortedListOf<GroupData> oldList = app.getModel().getGroups();
+	
+    app.getGroupHelper().createGroupWithModel(group);
+
+    SortedListOf<GroupData> newList = app.getModel().getGroups();
+    
+	assertThat(newList, equalTo(oldList.withAdded(group)));
+
+	if (needCheck()) {
+		if ("yes".equals(app.getProperty("check.db"))) {
+			assertThat(app.getModel().getGroups(), equalTo(app.getHibernateHelper().listGroups()));
+		}
+		if ("yes".equals(app.getProperty("check.ui"))) {
+			assertThat(app.getModel().getGroups(), equalTo(app.getGroupHelper().getUiGroupsList()));
+		}
 	}
+  
+  }
 
 }

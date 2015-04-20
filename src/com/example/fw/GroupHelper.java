@@ -21,8 +21,8 @@ public class GroupHelper extends WebDriverHelperBase {
 	}
 
 	private SortedListOf<GroupData> cachedGroupsList;
-	
-	public SortedListOf<GroupData> getGroupsList(String method) {
+
+ 	public SortedListOf<GroupData> getGroupsList(String method) {
 		if (cachedGroupsList == null){
 			rebuildGroupsListCache(method);
 		}
@@ -42,6 +42,7 @@ public class GroupHelper extends WebDriverHelperBase {
 		}
 	}
 
+	
 	public GroupHelper createGroup(GroupData group) {
 		manager.navigateTo().groupsPage();
 		initGroupCreation();
@@ -52,7 +53,18 @@ public class GroupHelper extends WebDriverHelperBase {
 		return this;
 	}
 
+	public GroupHelper createGroupWithModel(GroupData group) {
+		manager.navigateTo().groupsPage();
+		initGroupCreation();
+    	fillGroupForm(group);
+    	submitGroupCreation();
+    	returnToGroupPage();
+    	manager.getModel().addGroup(group);
+		return this;
+	}
+
 	public GroupHelper editGroupByIndex(GroupData group, int index, SortedListOf<GroupData> list) {
+		manager.navigateTo().groupsPage();
 		initGroupByIndex(index);
 		checkEqualGroupData(list, index);
 		fillGroupForm(group);
@@ -62,11 +74,32 @@ public class GroupHelper extends WebDriverHelperBase {
 		return this;
 	}
 
+	public GroupHelper editGroupByIndexWithModel(GroupData group, int index, SortedListOf<GroupData> list) {
+		manager.navigateTo().groupsPage();
+		initGroupByIndex(index);
+		checkEqualGroupData(list, index);
+		fillGroupForm(group);
+		submitGroupEditing();
+		returnToGroupPage();
+    	manager.getModel().removeGroup(index).addGroup(group);
+		return this;
+	}
+
 	public GroupHelper deleteGroupByIndex(int index) {
+		manager.navigateTo().groupsPage();
 		findGroupBasedXPathByIndex(index);
 		submitGroupDeleting();
 		returnToGroupPage();
 		rebuildGroupsListCache(INTERFACE);
+		return this;
+	}
+
+	public GroupHelper deleteGroupByIndexWithModel(int index) {
+		manager.navigateTo().groupsPage();
+		findGroupBasedXPathByIndex(index);
+		submitGroupDeleting();
+		returnToGroupPage();
+		manager.getModel().removeGroup(index);
 		return this;
 	}
 
@@ -75,6 +108,15 @@ public class GroupHelper extends WebDriverHelperBase {
 		assertThat(group, equalTo(getGroupDataFromPage()));
 	}
 
+ 	public SortedListOf<GroupData> getUiGroupsList() {
+		manager.navigateTo().groupsPage();
+		SortedListOf<GroupData> groups = new SortedListOf<GroupData>();
+		List<WebElement> checkboxes = getGroupRows();
+		for (WebElement checkbox : checkboxes) {
+			groups.add(new GroupData().withNameGroup(getNameGroup(checkbox)));
+		}
+		return groups;
+	}
 // -------------------------------------------------------------
 	
 	public GroupHelper initGroupCreation() {

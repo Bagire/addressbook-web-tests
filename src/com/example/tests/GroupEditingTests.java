@@ -32,5 +32,32 @@ public class GroupEditingTests extends TestBase{
 
 	}
 
+	@Test(dataProvider = "randomValidGroupGenerator")
+	public void testEditGroupByIndexWithModel (GroupData group) {
+
+	app.getModel().setGroups(app.getHibernateHelper().listGroups());
+
+	SortedListOf<GroupData> oldList = app.getModel().getGroups();
+	
+	Random rnd = new Random();
+	index=rnd.nextInt(oldList.size()-1);
+
+	app.getGroupHelper().editGroupByIndexWithModel(group, index, oldList);
+	
+    SortedListOf<GroupData> newList = app.getModel().getGroups();
+    
+	assertThat(newList, equalTo(oldList.without(index).withAdded(group)));
+
+	if (needCheck()) {
+		if ("yes".equals(app.getProperty("check.db"))) {
+			assertThat(app.getModel().getGroups(), equalTo(app.getHibernateHelper().listGroups()));
+		}
+		if ("yes".equals(app.getProperty("check.ui"))) {
+			assertThat(app.getModel().getGroups(), equalTo(app.getGroupHelper().getUiGroupsList()));
+		}
+	}
+  
+	}
+
 }
 
